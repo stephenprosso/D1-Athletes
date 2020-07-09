@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <style>
+    .nav-link {
+       cursor:pointer;
+    }
+    body {
+      margin-top: 25px;
+    
+    } 
+    </style>
+    <?!= include("index-css"); ?>
+  </head>
+  <body>
+  
+    <div class="container">
+     <nav id="navigation">
+      <ul class="nav justify-content-center main-nav nav-menu">
+
+        <li class="nav-item nav-menu_link">
+          <div class="nav-link active" id="search-link">Search</div>
+        </li>
+        <li class="nav-item nav-menu_link">
+          <div class="nav-link" id="add-customer-link">Add Customer</div>
+        </li>
+        
+      </ul>
+     </nav>
+      <div id="app"></div>
+      <!-- Content Here! -->
+  
+  </div>
+  
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  
+  <script>
+  var data;
+      function loadView(options){
+        var id = typeof options.id ==="undefined" ? "app" : options.id;
+        var cb = typeof options.callback ==="undefined" ? function(){} : options.callback;
+        
+        google.script.run.withSuccessHandler(function(html){
+          document.getElementById(id).innerHTML = html;
+          typeof options.params === "undefined" ? cb() : cb(options.params);
+        })[options.func]();
+      }
+      
+      function loadSearchView(){
+        //loadView({func: "loadSearchView", callback: setDataForSearch });
+        loadView({func: "loadSearchView" });
+      }
+      
+      function loadAddCustomerView(){
+        loadView({func: "loadAddCustomerView"});
+      }
+      
+     //event listeners for the tabs. on click will call the respective load view
+     document.getElementById("search-link").addEventListener("click",loadSearchView);
+     document.getElementById("add-customer-link").addEventListener("click",loadAddCustomerView);      
+     
+     
+      function addCustomer(){
+         var customerInfo = {};
+         customerInfo.firstName = document.getElementById("fname").value;
+         customerInfo.lastName = document.getElementById("lname").value;
+         customerInfo.phone = document.getElementById("phoneNumber").value;
+         
+         google.script.run.withSuccessHandler(function(){      
+           document.getElementById("save-success-message").classList.remove("invisible");           
+           setTimeout(function(){
+           document.getElementById("save-success-message").classList.add("invisible");
+           },2000);
+            document.getElementById("fname").value = "";
+            document.getElementById("lname").value = "";
+            document.getElementById("phoneNumber").value = "";
+            
+         }).addCustomer(customerInfo);
+        
+      }
+     //functions for click action events. ifthe target matches your class name run a function. if looking for an ID us # before the name
+     function clickEventHandler(e){
+       if(e.target.matches(".delete-button")){
+         deleteCustomer(e);
+        }      
+       if(e.target.matches(".before-delete-button")){
+         displayConfirmDelete(e);
+        }    
+       if(e.target.matches("#add-customer-button")){
+         addCustomer();
+        } 
+      }
+     //event liateners for actions happening inside our "APP" div
+     document.getElementById("app").addEventListener("click",clickEventHandler);   
+     //document.addEventListener("DOMContentLoaded",loadSearchView); 
+
+  </script>
+  </body>
+</html>   
+    
