@@ -9,13 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
     <style>
-    .nav-link {
-       cursor:pointer;
-    }
-    body {
-      margin-top: 25px;
     
-    } 
     </style>
     <?!= include("index-css"); ?>
   </head>
@@ -24,14 +18,15 @@
     <div class="container">
      <nav id="navigation">
       <ul class="nav justify-content-center main-nav nav-menu">
-
         <li class="nav-item nav-menu_link">
           <div class="nav-link active" id="search-link">Search</div>
         </li>
         <li class="nav-item nav-menu_link">
-          <div class="nav-link" id="add-customer-link">Add Customer</div>
+          <div class="nav-link" id="add-athlete-link">Add Athlete</div>
         </li>
-        
+        <li class="nav-item nav-menu_link">
+          <div class="nav-link" id="events-link">Events</div>
+        </li>      
       </ul>
      </nav>
       <div id="app"></div>
@@ -62,16 +57,20 @@
         loadView({func: "loadSearchView" });
       }
       
-      function loadAddCustomerView(){
-        loadView({func: "loadAddCustomerView"});
+      function loadAddAthleteView(){
+        loadView({func: "loadAddAthleteView"});
+      }
+      function loadEventsView(){
+        loadView({func: "loadEventsView"});
       }
       
-     //event listeners for the tabs. on click will call the respective load view
+//event listeners for the tabs. on click will call the respective load view
+     document.getElementById("events-link").addEventListener("click",loadEventsView);
      document.getElementById("search-link").addEventListener("click",loadSearchView);
-     document.getElementById("add-customer-link").addEventListener("click",loadAddCustomerView);      
+     document.getElementById("add-athlete-link").addEventListener("click",loadAddAthleteView);      
      
      
-      function addCustomer(){
+      function addAthlete(){
          var customerInfo = {};
          customerInfo.firstName = document.getElementById("fname").value;
          customerInfo.lastName = document.getElementById("lname").value;
@@ -89,7 +88,7 @@
          }).addCustomer(customerInfo);
         
       }
-     //functions for click action events. ifthe target matches your class name run a function. if looking for an ID us # before the name
+//functions for click action events. ifthe target matches your class name run a function. if looking for an ID us # before the name
      function clickEventHandler(e){
        if(e.target.matches(".delete-button")){
          deleteCustomer(e);
@@ -97,13 +96,13 @@
        if(e.target.matches(".before-delete-button")){
          displayConfirmDelete(e);
         }    
-       if(e.target.matches("#add-customer-button")){
+       if(e.target.matches("#add-athlete-button")){
          addCustomer();
         } 
       }
-     //event liateners for actions happening inside our "APP" div
+//event liateners for actions happening inside our "APP" div
      document.getElementById("app").addEventListener("click",clickEventHandler);   
-     //document.addEventListener("DOMContentLoaded",loadSearchView); 
+     document.addEventListener("DOMContentLoaded",loadEventsView); 
 
   </script>
   </body>

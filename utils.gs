@@ -32,12 +32,17 @@ function loadPartialHTML_(partial) {
   
 }
 
-function loadAddCustomerView(){
+function loadAddAthleteView(){
 
-  return loadPartialHTML_("addcustomer");
+  return loadPartialHTML_("addathlete");
 }
 
 function loadSearchView(){
 
   return loadPartialHTML_("search");
+}
+
+function loadEventsView(){
+
+  return loadPartialHTML_("events");
 }
