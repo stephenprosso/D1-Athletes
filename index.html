@@ -61,9 +61,63 @@
         loadView({func: "loadAddAthleteView"});
       }
       function loadEventsView(){
-        loadView({func: "loadEventsView"});
+      //next step will be to pass some params for the eventID
+        loadView({func: "loadEventsView", callback: populateEvents});
       }
       
+      function populateEvents(){
+        google.script.run.withSuccessHandler(generateEventCard).getEventTableData();
+      }
+      
+      function generateEventCard(dataArray) {
+       console.log(dataArray);
+
+       
+         dataArray.forEach(function(r) {
+         
+         var cardHolder = document.createElement("div");
+         cardHolder.classList.add("col-sm-4");
+          
+
+          var cardLink = document.createElement("a");
+
+          cardLink.classList.add("cardLinkClass");
+          var card = document.createElement("div");
+          card.classList.add("card");
+          card.classList.add("cardStyle");
+          var image = document.createElement("img");
+          image.classList.add("card-img-top");
+          image.classList.add("photo-size");
+          image.src = r[4];
+          
+          var cardbody = document.createElement("div");
+          cardbody.classList.add("card-body");
+          
+          var eventID = document.createElement("p");
+          eventID.textContent = r[0];
+          var venue = document.createElement("H4");
+          venue.textContent = r[1];
+          var eventName=  document.createElement("H3");
+          eventName.textContent = r[2];
+          var date = document.createElement("p");
+          date.textContent = r[3];
+
+          cardbody.appendChild(eventName);
+          cardbody.appendChild(venue);
+          cardbody.appendChild(date);
+          card.appendChild(image);
+          card.appendChild(cardbody);
+          cardLink.appendChild(card);
+          
+          console.log(card);
+          cardHolder.appendChild(cardLink);
+          document.getElementById("card-group").appendChild(cardHolder);
+
+    });
+
+ } 
+      
+     
 //event listeners for the tabs. on click will call the respective load view
      document.getElementById("events-link").addEventListener("click",loadEventsView);
      document.getElementById("search-link").addEventListener("click",loadSearchView);
