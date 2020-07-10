@@ -17,7 +17,6 @@
 </head>
 
 <body>
-    <h1 class="d-flex justify-content-center">Athlete CMS</h1>
   <div class="container">
     <nav id="navigation">
       <ul class="nav justify-content-center main-nav nav-menu">
@@ -30,7 +29,7 @@
         <li class="nav-item nav-menu_link">
           <div class="nav-link" id="events-link">Events</div>
         </li>
-         <li class="nav-item nav-menu_link">
+        <li class="nav-item nav-menu_link">
           <div class="nav-link" id="event-details-link">Event Details</div>
         </li>
       </ul>
@@ -77,102 +76,90 @@
       //next step will be to pass some params for the eventID
       loadView({ func: "loadEventsView", callback: populateEvents });
     }
-    
-    function loadEventDetailsView(){
+
+    function loadEventDetailsView() {
       loadView({ func: "loadEventDetailsView", callback: populateEventDetails });
     }
 
     function populateEvents() {
       google.script.run.withSuccessHandler(generateEventCard).getEventTableData();
     }
-    
-    function populateEventDetails(){
-       google.script.run.withSuccessHandler(generateTable).getTableData();
-       //google.script.run.withSuccessHandler(generateTableTitle).getTableTitle();
+
+    function populateEventDetails() {
+      google.script.run.withSuccessHandler(generateTable).getTableData();
+      google.script.run.withSuccessHandler(generateTableTitle).getTableTitle();
     }
-    
+
     function generateTable(dataArray) {
 
-        var tbody = document.getElementById("table-body");
-        
-        dataArray.forEach(function(r) {
+      var tbody = document.getElementById("table-body");
 
-            var row = document.createElement("tr");
-            //var col1 = document.createElement("td");
-            //col1.textContent = r[0];
-            var col2 = document.createElement("td");
-            col2.textContent = r[1];
-            var col3 = document.createElement("td");
-            col3.textContent = r[2];
-            var col4 = document.createElement("td");
-            col4.textContent = r[3];
-            //copy col 4 and create a new column 5. rename your col-5 and col-6 to col-6 and col-7.
-            //the time and the check box need to side by side time LEFT and check box on RIGHT
-            var col5 = document.createElement("td");
-            col5.textContent = r[4];
+      dataArray.forEach(function (r) {
 
+        var row = document.createElement("tr");
+        //var col1 = document.createElement("td");
+        //col1.textContent = r[0];
+        var col2 = document.createElement("td");
+        col2.textContent = r[1];
+        var col3 = document.createElement("td");
+        col3.textContent = r[2];
+        var col4 = document.createElement("td");
+        col4.textContent = r[3];
+        //the time and the check box need to side by side time LEFT and check box on RIGHT
+        var col5 = document.createElement("td");
+        col5.textContent = r[4];
+        var col6 = document.createElement("td");
+        col6.textContent = r[5];
+        col6.classList.add("timeStamp");
+        var col7 = document.createElement("td");
+        col7.classList.add("checkBoxButtons");
+        var checkBox = document.createElement("input");
+        checkBox.type = "checkbox";
+        checkBox.value = r[6];
+        checkBox.dataset.recordId = r[0];
+        checkBox.classList.add("cb");
+        checkBox.checked = r[6] == "TRUE" ? true : false;
+        col7.appendChild(checkBox);
+        var saveButton = document.createElement("button");
+        saveButton.textContent = "Save";
+        saveButton.classList.add("classSave");
+        saveButton.classList.add("ml-2");
+        saveButton.classList.add("d-none");
+        saveButton.classList.add("btn");
+        saveButton.classList.add("btn-dark");
+        saveButton.classList.add("btn-sm");
+        saveButton.dataset.recordId = r[0];
+        var cancelButton = document.createElement("button");
+        cancelButton.textContent = "Cancel";
+        cancelButton.classList.add("classCancel");
+        cancelButton.classList.add("ml-2");
+        cancelButton.classList.add("d-none");
+        cancelButton.classList.add("btn");
+        cancelButton.classList.add("btn-dark");
+        cancelButton.classList.add("btn-sm");
+        cancelButton.dataset.initialState = r[6] == "TRUE" ? true : false;
 
-            var col6 = document.createElement("td");
-            col6.textContent = r[5];
-            col6.classList.add("timeStamp");
-            var col7 = document.createElement("td");
-            col7.classList.add("checkBoxButtons");
-            var checkBox = document.createElement("input");
-            checkBox.type = "checkbox";
-
-            //check box is in JS column 6 now
-            checkBox.value = r[6];
-            //checkBox.value = r[5];
-            checkBox.dataset.recordId = r[0];
-            checkBox.classList.add("cb");
-            //if the r5 = 1 make the check true otherwise it will be false
-
-            //the check box is in JS column 6 now change from JS column 5
-            checkBox.checked = r[6] == "TRUE" ? true : false;
-            //checkBox.checked = r[5] == "TRUE" ? true : false;
-
-            //col6 is now col7. append the child to col 7
-            col7.appendChild(checkBox);
-
-            //old line//col6.appendChild(checkBox);
-            var saveButton = document.createElement("button");
-            saveButton.textContent = "Save";
-            saveButton.classList.add("classSave");
-            saveButton.classList.add("ml-2");
-            saveButton.classList.add("d-none");
-            saveButton.classList.add("btn");
-            saveButton.classList.add("btn-dark");
-            saveButton.classList.add("btn-sm");
-            saveButton.dataset.recordId = r[0];
-            var cancelButton = document.createElement("button");
-            cancelButton.textContent = "Cancel";
-            cancelButton.classList.add("classCancel");
-            cancelButton.classList.add("ml-2");
-            cancelButton.classList.add("d-none");
-            cancelButton.classList.add("btn");
-            cancelButton.classList.add("btn-dark");
-            cancelButton.classList.add("btn-sm");
-            //change initial state to come from r[6] the check box moved from colum 5 to column 6
-            cancelButton.dataset.initialState = r[6] == "TRUE" ? true : false;
-            ///old line/ cancelButton.dataset.initialState = r[5] == "TRUE" ? true : false;
-
-            //append the child to col 7. col-6 was changed to col-7
-            col7.appendChild(saveButton);
-            col7.appendChild(cancelButton);
-            //col6.appendChild(saveButton);
-            //col6.appendChild(cancelButton);
-            //row.appendChild(col1);
-            row.appendChild(col2);
-            row.appendChild(col3);
-            row.appendChild(col4);
-            row.appendChild(col5);
-            row.appendChild(col6);
-            //add col7 below
-            row.appendChild(col7);
-            tbody.appendChild(row);
-        });
+        col7.appendChild(saveButton);
+        col7.appendChild(cancelButton);
+        row.appendChild(col2);
+        row.appendChild(col3);
+        row.appendChild(col4);
+        row.appendChild(col5);
+        row.appendChild(col6);
+        row.appendChild(col7);
+        tbody.appendChild(row);
+      });
 
     }
+    
+    function generateTableTitle(title) {
+
+      console.log(title);
+ 
+     document.getElementById("title").innerHTML = title;
+ 
+
+}
 
     function generateEventCard(dataArray) {
       console.log(dataArray);
@@ -182,11 +169,10 @@
 
         var cardHolder = document.createElement("div");
         cardHolder.classList.add("col-sm-4");
-
-
-        var cardLink = document.createElement("a");
-
+        var cardLink = document.createElement("div");
         cardLink.classList.add("cardLinkClass");
+        cardLink.dataset.recordId = r[0];
+        
         var card = document.createElement("div");
         card.classList.add("card");
         card.classList.add("cardStyle");
@@ -197,9 +183,11 @@
 
         var cardbody = document.createElement("div");
         cardbody.classList.add("card-body");
+        cardbody.dataset.recordId = r[0];
 
-        var eventID = document.createElement("p");
-        eventID.textContent = r[0];
+        //var eventID = document.createElement("p");
+        //eventID.textContent = r[0];
+        //console.log(eventID.dataset.recordId);
         var venue = document.createElement("H4");
         venue.textContent = r[1];
         var eventName = document.createElement("H3");
@@ -210,6 +198,7 @@
         cardbody.appendChild(eventName);
         cardbody.appendChild(venue);
         cardbody.appendChild(date);
+        //cardbody.appendChild(eventID);
         card.appendChild(image);
         card.appendChild(cardbody);
         cardLink.appendChild(card);
@@ -248,67 +237,48 @@
       }).addCustomer(customerInfo);
 
     }
-    
-    
+
+
     //functions for click action events. ifthe target matches your class name run a function. if looking for an ID us # before the name
     function clickEventHandler(e) {
-      if (e.target.matches(".delete-button")) {
-        deleteCustomer(e);
-      }
-      if (e.target.matches(".before-delete-button")) {
-        displayConfirmDelete(e);
-      }
-      if (e.target.matches("#add-athlete-button")) {
-        addCustomer();
-      }
-      
-              if (e.target.classList.contains("cb")) {
-            //remove the d-none from the next element to the right which is the save button
-            e.target.nextElementSibling.classList.remove("d-none");
-            //remove the d-none for the element.. next to the element that is next to the check box. which is the CANcel button
-            e.target.nextElementSibling.nextElementSibling.classList.remove("d-none");
-        } // the class contains CB then the classlist remove none if we click the check box
-        if (e.target.classList.contains("classCancel")) {
-            //if the click cancel the element previous, previous from the cancel button = to the initial state.
-            //the initial state is set down below when the elements are created. the JS turnery statement get the initial value sets it accordingly.
-            e.target.previousElementSibling.previousElementSibling.checked = e.target.dataset.initialState == "true" ? true : false;
-            //add d-none to the classlist of the cancel you button you just clicked
-            e.target.classList.add("d-none");
-            //hide the element to the left of the cancel button which is the SAVE.
-            e.target.previousElementSibling.classList.add("d-none");
-        } // if we click cancel
+    //console.log(e);
+        
+       if (e.target.classList.contains("card-body")) {
+       var event= e.target.dataset.recordId;
+       console.log("Shit-Pants");
+         console.log(event);
+      } 
 
-        if (e.target.classList.contains("classSave")) {
-            //if they click save we will save the data in an empty object
-            //create empty object recordInfo
-            var recordInfo = {};
-            //add an ID to the empty recordInfo Object. this is = to the recordID in the dataSet,of the target that was clicked on. 
-            //the recrodID is et below when the table is populated
-            recordInfo.id = e.target.dataset.recordId;
-            //add checkInState to the recordInfo Object. this is = to the previous element sibling which is the check box
-            recordInfo.checkInState = e.target.previousElementSibling.checked;
-            //log for testing to see the contents of checkinState
-            console.log(recordInfo.checkInState);
-            //show the loading div 
-            document.getElementById("loading").classList.remove("d-none");
-            //the below googe script function calls a function in your GS page. on success it will call the function in the call back.
-            google.script.run.withSuccessHandler(function(newDate) {
-                 console.log(newDate);
-                e.target.nextElementSibling.dataset.initialState = newDate[1] == "TRUE" ? true : false;
-                console.log(e.target.nextElementSibling.dataset.initialState);
-                var timeStampColumn = e.target.closest(".checkBoxButtons").previousElementSibling;
-                console.log(timeStampColumn);
-                //on 5/19/20 I changed this from newDate[0], to newDate[1]. 
-                //this cant be right, the newDate array has the guest list name in it which is wrong
-                //10 MIN LATER I CHANGED IT BACK- this error was from a line in the funcs.GS
-                timeStampColumn.textContent = newDate[0];
-                e.target.classList.add("d-none");
-                e.target.nextElementSibling.classList.add("d-none");
-                document.getElementById("loading").classList.add("d-none");
-            }).updateRecordById(recordInfo);
-        } //if we click save
+      if (e.target.classList.contains("cb")) {
+        e.target.nextElementSibling.classList.remove("d-none");
+        e.target.nextElementSibling.nextElementSibling.classList.remove("d-none");
+      } 
+      if (e.target.classList.contains("classCancel")) {
+        e.target.previousElementSibling.previousElementSibling.checked = e.target.dataset.initialState == "true" ? true : false;
+        e.target.classList.add("d-none");
+        e.target.previousElementSibling.classList.add("d-none");
+      } // if we click cancel
+
+      if (e.target.classList.contains("classSave")) {
+        var recordInfo = {};
+        recordInfo.id = e.target.dataset.recordId;
+        recordInfo.checkInState = e.target.previousElementSibling.checked;
+        console.log(recordInfo.checkInState);
+        document.getElementById("loading").classList.remove("d-none");
+        google.script.run.withSuccessHandler(function (newDate) {
+          console.log(newDate);
+          e.target.nextElementSibling.dataset.initialState = newDate[1] == "TRUE" ? true : false;
+          console.log(e.target.nextElementSibling.dataset.initialState);
+          var timeStampColumn = e.target.closest(".checkBoxButtons").previousElementSibling;
+          console.log(timeStampColumn);
+          timeStampColumn.textContent = newDate[0];
+          e.target.classList.add("d-none");
+          e.target.nextElementSibling.classList.add("d-none");
+          document.getElementById("loading").classList.add("d-none");
+        }).updateRecordById(recordInfo);
+      } //if we click save
     }
-    //event liateners for actions happening inside our "APP" div
+    //event listeners for actions happening inside our "APP" div
     document.getElementById("app").addEventListener("click", clickEventHandler);
     document.addEventListener("DOMContentLoaded", loadEventsView);
 
