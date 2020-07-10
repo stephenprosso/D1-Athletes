@@ -18,18 +18,12 @@ function getEventTableData() {
 }
 
 //**** EVENT DETAILS JS FUNCTION ****//
-function getTableData(ev) {
-
+function getTableData() {
+  var ev =2;
      var ss = SpreadsheetApp.openByUrl(url);
-     var ws = ss.getSheetByName("Copy of Data");
-     //4.//the get range is 7 and will need to be changed to 8 to the 8th column that was added
-     //remember that the range starts at column 1 not 0
-     var data = ws.getRange(2,1, ws.getLastRow() -1, 8).getDisplayValues();
-
-     //5. //var data = ws.getRange(2,1, ws.getLastRow() -1, 7).getDisplayValues();
-    data = data.filter(function(r){
-    //6. //in this filter function we need the  column in javascript which starts at 0
-    //6. //the 6 needs to be changed to a 7
+     var ws = ss.getSheetByName("Data");
+     var data = ws.getRange(2,1, ws.getLastRow() -1, 8).getValues();
+     data = data.filter(function(r){
     return r[7] == ev;
      //old line//return r[6] == ev;
   
@@ -44,13 +38,7 @@ function getTableTitle(ev) {
   var ss = SpreadsheetApp.openByUrl(url);
   var ws = ss.getSheetByName("Event");
   var data = ws.getRange(2,1, ws.getLastRow() - 1,4).getValues();  
-  //var gridTitleArray = data.filter(function(r){return r[0] == ev;}).map(function(r){return r[2] + " @ " + r[1] + " - " + r[3]});
-  
-  
-  
-  //May 1, 2020 12:00:00 AM PDT
-  //[May,1, 2020, 12:00:00,AM,PDT]
-  
+
   var gridTitleArray = data.filter(function(r){return r[0] == ev;}).map(function(r){
     
         var dateText = r[3].toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
