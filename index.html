@@ -74,9 +74,18 @@
       //next step will be to pass some params for the eventID
       loadView({ func: "loadEventsView", callback: populateEvents });
     }
+    
+    function loadEventDetailsView(){
+      loadView({ func: "loadEventDetailsView", callback: populateEventDetails });
+    }
 
     function populateEvents() {
       google.script.run.withSuccessHandler(generateEventCard).getEventTableData();
+    }
+    
+    function populateEventDetails(){
+       google.script.run.withSuccessHandler(generateTable).getTableData();
+       //google.script.run.withSuccessHandler(generateTableTitle).getTableTitle();
     }
 
     function generateEventCard(dataArray) {
@@ -129,6 +138,7 @@
 
 
     //event listeners for the tabs. on click will call the respective load view
+    document.getElementById("event-details-link").addEventListener("click", loadEventDetailsView);
     document.getElementById("events-link").addEventListener("click", loadEventsView);
     document.getElementById("search-link").addEventListener("click", loadSearchView);
     document.getElementById("add-athlete-link").addEventListener("click", loadAddAthleteView);
@@ -152,6 +162,8 @@
       }).addCustomer(customerInfo);
 
     }
+    
+    
     //functions for click action events. ifthe target matches your class name run a function. if looking for an ID us # before the name
     function clickEventHandler(e) {
       if (e.target.matches(".delete-button")) {

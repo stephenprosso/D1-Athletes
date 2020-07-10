@@ -46,3 +46,8 @@ function loadEventsView(){
 
   return loadPartialHTML_("events");
 }
+
+function loadEventDetailsView(){
+
+  return loadPartialHTML_("event-details");
+}
