@@ -57,11 +57,12 @@
     function loadView(options) {
       var id = typeof options.id === "undefined" ? "app" : options.id;
       var cb = typeof options.callback === "undefined" ? function () { } : options.callback;
+      var param = typeof options.param ==="undefined" ? null : options.param;
 
       google.script.run.withSuccessHandler(function (html) {
         document.getElementById(id).innerHTML = html;
         typeof options.params === "undefined" ? cb() : cb(options.params);
-      })[options.func]();
+      })[options.func](param);
     }
 
     function loadSearchView() {
@@ -77,17 +78,17 @@
       loadView({ func: "loadEventsView", callback: populateEvents });
     }
 
-    function loadEventDetailsView() {
-      loadView({ func: "loadEventDetailsView", callback: populateEventDetails });
+    function loadEventDetailsView(e) {
+      loadView({ func: "loadEventDetailsView", callback: populateEventDetails, params: {custID: e} });
     }
 
     function populateEvents() {
       google.script.run.withSuccessHandler(generateEventCard).getEventTableData();
     }
 
-    function populateEventDetails() {
-      google.script.run.withSuccessHandler(generateTable).getTableData();
-      google.script.run.withSuccessHandler(generateTableTitle).getTableTitle();
+    function populateEventDetails(custID) {
+      google.script.run.withSuccessHandler(generateTable).getTableData(custID);
+      google.script.run.withSuccessHandler(generateTableTitle).getTableTitle(custID);
     }
 
     function generateTable(dataArray) {
@@ -247,6 +248,8 @@
        var event= e.target.dataset.recordId;
        console.log("Shit-Pants");
          console.log(event);
+         loadEventDetailsView(event);
+         
       } 
 
       if (e.target.classList.contains("cb")) {

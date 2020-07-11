@@ -20,9 +20,9 @@ function getEventTableData() {
 }
 
 //**** EVENT DETAILS JS FUNCTION ****//
-function getTableData() {
+function getTableData(ev) {
  
-  var ev = 2;
+ 
   var ss = SpreadsheetApp.openByUrl(url);
   var ws = ss.getSheetByName("Data");
   var data = ws.getRange(2, 1, ws.getLastRow() - 1, 8).getDisplayValues();
@@ -35,9 +35,9 @@ function getTableData() {
 }
 
 //**** EVENT DETAILS JS FUNCTION ****//
-function getTableTitle() {
+function getTableTitle(ev) {
 
-  var ev = 2;
+
   var ss = SpreadsheetApp.openByUrl(url);
   var ws = ss.getSheetByName("Events");
   var data = ws.getRange(2, 1, ws.getLastRow() - 1, 4).getValues();
