@@ -20,14 +20,15 @@ function getEventTableData() {
 }
 
 //**** EVENT DETAILS JS FUNCTION ****//
-function getTableData(ev) {
+function getTableData(eventId) {
  
- 
+ //var eventId = 1;
   var ss = SpreadsheetApp.openByUrl(url);
   var ws = ss.getSheetByName("Data");
   var data = ws.getRange(2, 1, ws.getLastRow() - 1, 8).getDisplayValues();
+  //Logger.log(data);
   data = data.filter(function (r) {
-    return r[7] == ev;
+    return r[7] == eventId.custID;
   });
   Logger.log("data : " + data);
   return data;

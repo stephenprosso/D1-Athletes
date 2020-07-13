@@ -57,12 +57,12 @@
     function loadView(options) {
       var id = typeof options.id === "undefined" ? "app" : options.id;
       var cb = typeof options.callback === "undefined" ? function () { } : options.callback;
-      var param = typeof options.param ==="undefined" ? null : options.param;
+      //var param = typeof options.param ==="undefined" ? function () { } : options.param;
 
       google.script.run.withSuccessHandler(function (html) {
         document.getElementById(id).innerHTML = html;
         typeof options.params === "undefined" ? cb() : cb(options.params);
-      })[options.func](param);
+      })[options.func]();
     }
 
     function loadSearchView() {
@@ -78,25 +78,87 @@
       loadView({ func: "loadEventsView", callback: populateEvents });
     }
 
-    function loadEventDetailsView(e) {
-      loadView({ func: "loadEventDetailsView", callback: populateEventDetails, params: {custID: e} });
+    function loadEventDetailsView(eventId) {
+      loadView({ func: "loadEventDetailsView", callback: populateEventDetails, params: {custID: eventId} });
+      console.log(eventId);
     }
 
     function populateEvents() {
       google.script.run.withSuccessHandler(generateEventCard).getEventTableData();
     }
 
-    function populateEventDetails(custID) {
-      google.script.run.withSuccessHandler(generateTable).getTableData(custID);
-      google.script.run.withSuccessHandler(generateTableTitle).getTableTitle(custID);
+    function populateEventDetails(eId) {
+    console.log(eId);
+      google.script.run.withSuccessHandler(generateTable).getTableData(eId);
+      google.script.run.withSuccessHandler(generateTableTitle).getTableTitle(eId);
     }
 
-    function generateTable(dataArray) {
+    function addAthlete() {
+      var customerInfo = {};
+      customerInfo.firstName = document.getElementById("fname").value;
+      customerInfo.lastName = document.getElementById("lname").value;
+      customerInfo.phone = document.getElementById("phoneNumber").value;
 
+      google.script.run.withSuccessHandler(function () {
+        document.getElementById("save-success-message").classList.remove("invisible");
+        setTimeout(function () {
+          document.getElementById("save-success-message").classList.add("invisible");
+        }, 2000);
+        document.getElementById("fname").value = "";
+        document.getElementById("lname").value = "";
+        document.getElementById("phoneNumber").value = "";
+
+      }).addCustomer(customerInfo);
+
+    }
+
+
+    //functions for click action events. ifthe target matches your class name run a function. if looking for an ID us # before the name
+    function clickEventHandler(e) {
+    //console.log(e);        
+       if (e.target.classList.contains("card-body")) {
+       var eventId= e.target.dataset.recordId;
+       console.log("Shit-Pants");
+         console.log(eventId);
+         loadEventDetailsView(eventId);         
+      } 
+
+      if (e.target.classList.contains("cb")) {
+        e.target.nextElementSibling.classList.remove("d-none");
+        e.target.nextElementSibling.nextElementSibling.classList.remove("d-none");
+      } 
+      if (e.target.classList.contains("classCancel")) {
+        e.target.previousElementSibling.previousElementSibling.checked = e.target.dataset.initialState == "true" ? true : false;
+        e.target.classList.add("d-none");
+        e.target.previousElementSibling.classList.add("d-none");
+      } // if we click cancel
+
+      if (e.target.classList.contains("classSave")) {
+        var recordInfo = {};
+        recordInfo.id = e.target.dataset.recordId;
+        recordInfo.checkInState = e.target.previousElementSibling.checked;
+        console.log(recordInfo.checkInState);
+        document.getElementById("loading").classList.remove("d-none");
+        google.script.run.withSuccessHandler(function (newDate) {
+          console.log(newDate);
+          e.target.nextElementSibling.dataset.initialState = newDate[1] == "TRUE" ? true : false;
+          console.log(e.target.nextElementSibling.dataset.initialState);
+          var timeStampColumn = e.target.closest(".checkBoxButtons").previousElementSibling;
+          console.log(timeStampColumn);
+          timeStampColumn.textContent = newDate[0];
+          e.target.classList.add("d-none");
+          e.target.nextElementSibling.classList.add("d-none");
+          document.getElementById("loading").classList.add("d-none");
+        }).updateRecordById(recordInfo);
+      } //if we click save
+    }
+    //event listeners for actions happening inside our "APP" div
+    document.getElementById("app").addEventListener("click", clickEventHandler);
+    document.addEventListener("DOMContentLoaded", loadEventsView);
+        function generateTable(dataArray) {
       var tbody = document.getElementById("table-body");
 
       dataArray.forEach(function (r) {
-
         var row = document.createElement("tr");
         //var col1 = document.createElement("td");
         //col1.textContent = r[0];
@@ -154,12 +216,8 @@
     }
     
     function generateTableTitle(title) {
-
       console.log(title);
- 
      document.getElementById("title").innerHTML = title;
- 
-
 }
 
     function generateEventCard(dataArray) {
@@ -212,78 +270,11 @@
 
     }
 
-
     //event listeners for the tabs. on click will call the respective load view
     document.getElementById("event-details-link").addEventListener("click", loadEventDetailsView);
     document.getElementById("events-link").addEventListener("click", loadEventsView);
     document.getElementById("search-link").addEventListener("click", loadSearchView);
     document.getElementById("add-athlete-link").addEventListener("click", loadAddAthleteView);
-
-
-    function addAthlete() {
-      var customerInfo = {};
-      customerInfo.firstName = document.getElementById("fname").value;
-      customerInfo.lastName = document.getElementById("lname").value;
-      customerInfo.phone = document.getElementById("phoneNumber").value;
-
-      google.script.run.withSuccessHandler(function () {
-        document.getElementById("save-success-message").classList.remove("invisible");
-        setTimeout(function () {
-          document.getElementById("save-success-message").classList.add("invisible");
-        }, 2000);
-        document.getElementById("fname").value = "";
-        document.getElementById("lname").value = "";
-        document.getElementById("phoneNumber").value = "";
-
-      }).addCustomer(customerInfo);
-
-    }
-
-
-    //functions for click action events. ifthe target matches your class name run a function. if looking for an ID us # before the name
-    function clickEventHandler(e) {
-    //console.log(e);
-        
-       if (e.target.classList.contains("card-body")) {
-       var event= e.target.dataset.recordId;
-       console.log("Shit-Pants");
-         console.log(event);
-         loadEventDetailsView(event);
-         
-      } 
-
-      if (e.target.classList.contains("cb")) {
-        e.target.nextElementSibling.classList.remove("d-none");
-        e.target.nextElementSibling.nextElementSibling.classList.remove("d-none");
-      } 
-      if (e.target.classList.contains("classCancel")) {
-        e.target.previousElementSibling.previousElementSibling.checked = e.target.dataset.initialState == "true" ? true : false;
-        e.target.classList.add("d-none");
-        e.target.previousElementSibling.classList.add("d-none");
-      } // if we click cancel
-
-      if (e.target.classList.contains("classSave")) {
-        var recordInfo = {};
-        recordInfo.id = e.target.dataset.recordId;
-        recordInfo.checkInState = e.target.previousElementSibling.checked;
-        console.log(recordInfo.checkInState);
-        document.getElementById("loading").classList.remove("d-none");
-        google.script.run.withSuccessHandler(function (newDate) {
-          console.log(newDate);
-          e.target.nextElementSibling.dataset.initialState = newDate[1] == "TRUE" ? true : false;
-          console.log(e.target.nextElementSibling.dataset.initialState);
-          var timeStampColumn = e.target.closest(".checkBoxButtons").previousElementSibling;
-          console.log(timeStampColumn);
-          timeStampColumn.textContent = newDate[0];
-          e.target.classList.add("d-none");
-          e.target.nextElementSibling.classList.add("d-none");
-          document.getElementById("loading").classList.add("d-none");
-        }).updateRecordById(recordInfo);
-      } //if we click save
-    }
-    //event listeners for actions happening inside our "APP" div
-    document.getElementById("app").addEventListener("click", clickEventHandler);
-    document.addEventListener("DOMContentLoaded", loadEventsView);
 
   </script>
 </body>
