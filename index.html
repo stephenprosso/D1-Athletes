@@ -78,19 +78,19 @@
       loadView({ func: "loadEventsView", callback: populateEvents });
     }
 
-    function loadEventDetailsView(eventId) {
-      loadView({ func: "loadEventDetailsView", callback: populateEventDetails, params: {custID: eventId} });
-      console.log(eventId);
+    function loadEventDetailsView(e) {
+      loadView({ func: "loadEventDetailsView", callback: populateEventDetails, params: {eventID: e.target.dataset.recordId} });
+      console.log(e);
     }
 
     function populateEvents() {
       google.script.run.withSuccessHandler(generateEventCard).getEventTableData();
     }
 
-    function populateEventDetails(eId) {
-    console.log(eId);
-      google.script.run.withSuccessHandler(generateTable).getTableData(eId);
-      google.script.run.withSuccessHandler(generateTableTitle).getTableTitle(eId);
+    function populateEventDetails(e) {
+    console.log(e);
+      google.script.run.withSuccessHandler(generateTable).getTableData(e);
+      google.script.run.withSuccessHandler(generateTableTitle).getTableTitle(e);
     }
 
     function addAthlete() {
@@ -117,10 +117,12 @@
     function clickEventHandler(e) {
     //console.log(e);        
        if (e.target.classList.contains("card-body")) {
-       var eventId= e.target.dataset.recordId;
+       //gonna drop this
+       //variable below and just call the target.
+       //var eventId= e.target.dataset.recordId;
        console.log("Shit-Pants");
-         console.log(eventId);
-         loadEventDetailsView(eventId);         
+         console.log(e);
+         loadEventDetailsView(e);         
       } 
 
       if (e.target.classList.contains("cb")) {
