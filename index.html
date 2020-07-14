@@ -122,6 +122,9 @@
     }
 
 
+    
+
+
     //functions for click action events. ifthe target matches your class name run a function. if looking for an ID us # before the name
     function clickEventHandler(e) {
       //console.log(e);        
@@ -129,9 +132,12 @@
         //gonna drop this
         //variable below and just call the target.
         //var eventId= e.target.dataset.recordId;
-        console.log("Shit-Pants");
+        
         console.log(e);
         loadEventDetailsView(e);
+      } if (e.target.matches("#btnAddMulti")) {
+        console.log("Shit-Pants");
+        addMultiNames();
       }
 
       if (e.target.classList.contains("cb")) {
@@ -313,13 +319,13 @@
     } //close function btnclick
     //.is-invalid and .is-valid  
 
-
+        function addMultiNamesTest() {      console.log("add multi names clicked!");}
     function addMultiNames() {
-      google.script.url.getLocation(function (location) {
-        var eventID = location.parameters.event[0];
+ 
+        var eventID = 1;
 
-        var ctype = document.getElementById("credType").value;
-        var org = document.getElementById("organization").value;
+        var ctype = "GA";
+        var org = "Gym Class";
         var checkinDate = '';
         var checkBox = false;
 
@@ -334,20 +340,19 @@
 
         });
         console.log(data);
-        document.getElementById("loading").classList.remove("d-none");
+        //document.getElementById("loading").classList.remove("d-none");
         google.script.run.addMultiNames(data);
-        document.getElementById("multiName").value = "";
-        document.getElementById("organization").value = "";
+        //document.getElementById("multiName").value = "";
+        //document.getElementById("organization").value = "";
         //create cred type as a varialbe
-        var credTypeSelect = document.getElementById("credType");
+        //var credTypeSelect = document.getElementById("credType");
         //set selected index to 0 after data submitted
-        credTypeSelect.selectedIndex = 0;
-        var guestListSelect = document.getElementById("eventList");
+        //credTypeSelect.selectedIndex = 0;
+        //var guestListSelect = document.getElementById("eventList");
         //set selected index to 0 after data submitted
-        guestListSelect.selectedIndex = 0;
-        document.getElementById("loading").classList.add("d-none");
+        //guestListSelect.selectedIndex = 0;
+        //document.getElementById("loading").classList.add("d-none");
 
-      });
 
     }
 
