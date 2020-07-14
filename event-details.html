@@ -1,82 +1,85 @@
-    <div class="container">
-            <div class="row form-group">
-                <div class="col-sm-12">
-                 <h3 id = "title" class="pt-2"></h3>   
-                    <table id="tableId1" class="table">
-                        <thead>
-                            <tr>
-                              <!--  <th>ID</th> -->
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Racer Type</th>
-                                <th>Organization</th>
-                                <th>Time Checked In</th>
-                                <th>Check-in Athlete</th>
-                            </tr>
-                        </thead>
-                        <tbody id="table-body">
-                        </tbody>
-                    </table>
+<div class="container">
+    <div class="row form-group">
+        <div class="col-sm-12">
+            <h3 id="title" class="pt-2"></h3>
+            <table id="tableId1" class="table">
+                <thead>
+                    <tr>
+                        <!--  <th>ID</th> -->
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Racer Type</th>
+                        <th>Organization</th>
+                        <th>Time Checked In</th>
+                        <th>Check-in Athlete</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- CLOSE ROW -->
+</div>
+<!-- CLOSE CONTAINER -->
+<!-- start Loading Spinner -->
+<div id="loading" class="d-none">
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+</div>
+<!-- END Loading Spinner -->
+
+<div class="container">
+    <form>
+
+        <div class="row form-group">
+            <div class="col-sm-4">
+
+                <textarea id="multiName" name="multiName" rows="2" cols="35"
+                    placeholder="Add one or multiple guests. One guest per line. No commas. No middle names."
+                    required></textarea>
+                <div class="invalid-feedback">
+                    Enter names
                 </div>
             </div>
-            <!-- CLOSE ROW -->
-    </div>
-    <!-- CLOSE CONTAINER -->
-    <!-- start Loading Spinner -->
-    <div id="loading" class="d-none">
-     <div class="d-flex justify-content-center">
-       <div class="spinner-border" role="status">
-          <span class="sr-only">Loading...</span>
-      </div>
-      </div>
-    </div>
-    <!-- END Loading Spinner -->
-    
-        <div class="container">
-        <form>
-         
-            <div class="row form-group">
-                <div class="col-sm-4">
-                 
-                <textarea id="multiName" name="multiName" rows="2" cols="35" placeholder="Add one or multiple guests. One guest per line. No commas. No middle names." required></textarea>
-                <div class="invalid-feedback">
-                          Enter names
-                          </div>
-                </div>
-                <div class="col-sm-3">
-                    <!--<label>Credential Type</label>-->
-                    <select id="credType" class="form-control">
+            <div class="col-sm-3">
+                <!--<label>Credential Type</label>-->
+                <select id="credType" class="form-control">
                     <option disabled selected>-Cred Type-</option>
-
-                 </select>   
-                 <div class="invalid-feedback">Select a Cred Type</div>
-                </div>
-                <div class="col-sm-3">
-                  <!--<label for="organization">Last Name</label>-->
-                    <input id="organization" type="text" class="form-control validate" placeholder="Organization" value="">   
                     
-                  
-                  <!--<label>Select Event</label>-->
-                  <!--  <select id="eventList" class="form-control" required>
+                </select>
+                <div class="invalid-feedback">Select a Cred Type</div>
+            </div>
+            <div class="col-sm-3">
+                <!--<label for="organization">Last Name</label>-->
+                <input id="organization" type="text" class="form-control validate" placeholder="Organization" value="">
+
+
+                <!--<label>Select Event</label>-->
+                <!--  <select id="eventList" class="form-control" required>
                      <option selected disabled>-Event-</option>
                      
                     </select> -->
-                   
-                   <div class="invalid-feedback">Select event</div>
-                </div> <!--END col-->
 
-                <div class="col-sm-2">
-                <!--<label>Add Guest</label> -->
-                    <button id="btnAddMulti" type="button" class="btn btn-dark align-bottom">Add Guests</button>
-                </div>
-                <!-- Diong it like below get the eID from the javascript, getting it from the server, and setting in html, to give back to the javascript
-                     to give it back to the server -->
-                 <input id="eventList" type="hidden" class="form-control validate" value="" readonly>
-                    
+                <div class="invalid-feedback">Select event</div>
             </div>
-            <!-- END ROW -->
-        </form>
-        
-    
-    </div>
-    <!-- CLOSE CONTAINER -->
+            <!--END col-->
+
+            <div class="col-sm-2">
+                <!--<label>Add Guest</label> -->
+                <button id="btnAddMulti" type="button" class="btn btn-dark align-bottom">Add Guests</button>
+            </div>
+            <!-- Diong it like below get the eID from the javascript, getting it from the server, and setting in html, to give back to the javascript
+                     to give it back to the server -->
+            <input id="eventList" type="hidden" class="form-control validate" value="" readonly>
+
+        </div>
+        <!-- END ROW -->
+    </form>
+
+
+</div>
+<!-- CLOSE CONTAINER -->

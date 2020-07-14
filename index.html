@@ -79,7 +79,7 @@
     }
 
     function loadEventDetailsView(e) {
-      loadView({ func: "loadEventDetailsView", callback: populateEventDetails, params: {eventID: e.target.dataset.recordId} });
+      loadView({ func: "loadEventDetailsView", callback: populateEventDetails, params: { eventID: e.target.dataset.recordId } });
       console.log(e);
     }
 
@@ -88,19 +88,19 @@
     }
 
     function populateEventDetails(e) {
-    console.log(e);
+      console.log(e);
       google.script.run.withSuccessHandler(generateTable).getTableData(e);
       google.script.run.withSuccessHandler(generateTableTitle).getTableTitle(e);
+
+    }
+    /*  function showAddGuest(){
       
-    }
-  /*  function showAddGuest(){
-    
-      google.script.run.withSuccessHandler(addClassToButton).getEventID(e);
-    }
-    function addClassToButton(data){
-      var butt = document.getElementById("btnAddMulti");
-       butt.dataset.recrodId = r[0];
-    }*/
+        google.script.run.withSuccessHandler(addClassToButton).getEventID(e);
+      }
+      function addClassToButton(data){
+        var butt = document.getElementById("btnAddMulti");
+         butt.dataset.recrodId = r[0];
+      }*/
 
     function addAthlete() {
       var customerInfo = {};
@@ -124,20 +124,20 @@
 
     //functions for click action events. ifthe target matches your class name run a function. if looking for an ID us # before the name
     function clickEventHandler(e) {
-    //console.log(e);        
-       if (e.target.classList.contains("card-body")) {
-       //gonna drop this
-       //variable below and just call the target.
-       //var eventId= e.target.dataset.recordId;
-       console.log("Shit-Pants");
-         console.log(e);
-         loadEventDetailsView(e);         
-      } 
+      //console.log(e);        
+      if (e.target.classList.contains("card-body")) {
+        //gonna drop this
+        //variable below and just call the target.
+        //var eventId= e.target.dataset.recordId;
+        console.log("Shit-Pants");
+        console.log(e);
+        loadEventDetailsView(e);
+      }
 
       if (e.target.classList.contains("cb")) {
         e.target.nextElementSibling.classList.remove("d-none");
         e.target.nextElementSibling.nextElementSibling.classList.remove("d-none");
-      } 
+      }
       if (e.target.classList.contains("classCancel")) {
         e.target.previousElementSibling.previousElementSibling.checked = e.target.dataset.initialState == "true" ? true : false;
         e.target.classList.add("d-none");
@@ -166,13 +166,13 @@
     //event listeners for actions happening inside our "APP" div
     document.getElementById("app").addEventListener("click", clickEventHandler);
     document.addEventListener("DOMContentLoaded", loadEventsView);
-        function generateTable(dataArray) {
+    function generateTable(dataArray) {
       var tbody = document.getElementById("table-body");
 
       dataArray.forEach(function (r) {
         var butt = document.getElementById("btnAddMulti");
-       butt.dataset.recrodId = r[7];
-      
+        butt.dataset.recrodId = r[7];
+
         var row = document.createElement("tr");
         //var col1 = document.createElement("td");
         //col1.textContent = r[0];
@@ -228,12 +228,12 @@
       });
 
     }
-    
+
     function generateTableTitle(title) {
       console.log(title);
-     document.getElementById("title").innerHTML = title;
-     
-}
+      document.getElementById("title").innerHTML = title;
+
+    }
 
     function generateEventCard(dataArray) {
       console.log(dataArray);
@@ -246,7 +246,7 @@
         var cardLink = document.createElement("div");
         cardLink.classList.add("cardLinkClass");
         cardLink.dataset.recordId = r[0];
-        
+
         var card = document.createElement("div");
         card.classList.add("card");
         card.classList.add("cardStyle");
@@ -284,69 +284,69 @@
       });
 
     }
-    
-        function btnclickAddMultiValidate(){  
-       var toValidate = {
-        
-        
-         credType: "Cred Type Required",
-         eventList: "Select Event Required",
-          multiName: "Names Required"
-       };
-      
-       var idKeys = Object.keys(toValidate);
-       
-       var allValid = true;
-       idKeys.forEach(function(id){
-        var isValid =  checkIfValid(id, toValidate[id]);
-             if (!isValid) {
-             
-             allValid = false;
-             }
-       });
-       
-             if(allValid) {
-             
-           addMultiNames();
-       }
-    
+
+    function btnclickAddMultiValidate() {
+      var toValidate = {
+
+
+        credType: "Cred Type Required",
+        eventList: "Select Event Required",
+        multiName: "Names Required"
+      };
+
+      var idKeys = Object.keys(toValidate);
+
+      var allValid = true;
+      idKeys.forEach(function (id) {
+        var isValid = checkIfValid(id, toValidate[id]);
+        if (!isValid) {
+
+          allValid = false;
+        }
+      });
+
+      if (allValid) {
+
+        addMultiNames();
+      }
+
     } //close function btnclick
     //.is-invalid and .is-valid  
 
-    
-function addMultiNames() {
- google.script.url.getLocation(function(location) {
-    var eventID = location.parameters.event[0];
-    
-   var ctype = document.getElementById("credType").value;
-   var org  = document.getElementById("organization").value;
-   var checkinDate = '';
-   var checkBox = false;
-       
-       
-    var userInput = document.getElementById("multiName").value.trim();
-    var names = userInput.split("\n");
-    var data = [];
-    names.forEach(function(n){
-       var combinedName = n.split(" ");
-       
-       data.push([combinedName[0],combinedName[1],ctype,org,checkinDate,checkBox,eventID]);
-    
-    });
-    console.log(data);
-    document.getElementById("loading").classList.remove("d-none");
-    google.script.run.addMultiNames(data);
-      document.getElementById("multiName").value = "";
-      document.getElementById("organization").value = "";
-      //create cred type as a varialbe
-      var credTypeSelect = document.getElementById("credType");
-      //set selected index to 0 after data submitted
-      credTypeSelect.selectedIndex = 0;
-       var guestListSelect = document.getElementById("eventList");
-      //set selected index to 0 after data submitted
-      guestListSelect.selectedIndex = 0; 
-      document.getElementById("loading").classList.add("d-none");
-    
+
+    function addMultiNames() {
+      google.script.url.getLocation(function (location) {
+        var eventID = location.parameters.event[0];
+
+        var ctype = document.getElementById("credType").value;
+        var org = document.getElementById("organization").value;
+        var checkinDate = '';
+        var checkBox = false;
+
+
+        var userInput = document.getElementById("multiName").value.trim();
+        var names = userInput.split("\n");
+        var data = [];
+        names.forEach(function (n) {
+          var combinedName = n.split(" ");
+
+          data.push([combinedName[0], combinedName[1], ctype, org, checkinDate, checkBox, eventID]);
+
+        });
+        console.log(data);
+        document.getElementById("loading").classList.remove("d-none");
+        google.script.run.addMultiNames(data);
+        document.getElementById("multiName").value = "";
+        document.getElementById("organization").value = "";
+        //create cred type as a varialbe
+        var credTypeSelect = document.getElementById("credType");
+        //set selected index to 0 after data submitted
+        credTypeSelect.selectedIndex = 0;
+        var guestListSelect = document.getElementById("eventList");
+        //set selected index to 0 after data submitted
+        guestListSelect.selectedIndex = 0;
+        document.getElementById("loading").classList.add("d-none");
+
       });
 
     }
