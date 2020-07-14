@@ -136,8 +136,8 @@
         console.log(e);
         loadEventDetailsView(e);
       } if (e.target.matches("#btnAddMulti")) {
-        console.log("Shit-Pants");
-        addMultiNames();
+        //console.log("Shit-Pants");
+        btnclickAddMultiValidate();
       }
 
       if (e.target.classList.contains("cb")) {
@@ -317,26 +317,48 @@
       }
 
     } //close function btnclick
-    //.is-invalid and .is-valid  
+       //.is-invalid and .is-valid  
+   
+      function checkIfValid(elID, message) {
+      var elToValidate = document.getElementById(elID);
+      var isValid = false;
+      console.log("Start validating");
+      console.log(elToValidate.tagName);
+      switch(elToValidate.tagName) {
+       
+              case "INPUT":
+                  isValid = elToValidate.checkValidity();
+                  isValid ? elToValidate.classList.remove("is-invalid") : elToValidate.classList.add("is-invalid");
+                break;
+              case "SELECT":
+                  isValid = elToValidate.selectedIndex === 0 ? false : true;
+                  isValid ? elToValidate.classList.remove("is-invalid") : elToValidate.classList.add("is-invalid");
+                break;
+              case "TEXTAREA":
+                  isValid = elToValidate.checkValidity();
+                  isValid ? elToValidate.classList.remove("is-invalid") : elToValidate.classList.add("is-invalid");
+                break;
+              default:
+                // code block
+            }
+      
+     return isValid;
+    
+    } // close function CheckIfValid 
 
     function addMultiNames() {
  
         var eventID = 1;
-
         var ctype = document.getElementById("credType").value;
         var org  = document.getElementById("organization").value;
         var checkinDate = '';
         var checkBox = false;
-
-
         var userInput = document.getElementById("multiName").value.trim();
         var names = userInput.split("\n");
         var data = [];
         names.forEach(function (n) {
           var combinedName = n.split(" ");
-
           data.push([combinedName[0], combinedName[1], ctype, org, checkinDate, checkBox, eventID]);
-
         });
         console.log(data);
         document.getElementById("loading").classList.remove("d-none");
@@ -354,7 +376,6 @@
     }
 
     //event listeners for the tabs. on click will call the respective load view
-    document.getElementById("event-details-link").addEventListener("click", loadEventDetailsView);
     document.getElementById("events-link").addEventListener("click", loadEventsView);
     document.getElementById("search-link").addEventListener("click", loadSearchView);
     document.getElementById("add-athlete-link").addEventListener("click", loadAddAthleteView);
