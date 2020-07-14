@@ -31,3 +31,52 @@
       </div>
     </div>
     <!-- END Loading Spinner -->
+    
+        <div class="container">
+        <form>
+         
+            <div class="row form-group">
+                <div class="col-sm-4">
+                 
+                <textarea id="multiName" name="multiName" rows="2" cols="35" placeholder="Add one or multiple guests. One guest per line. No commas. No middle names." required></textarea>
+                <div class="invalid-feedback">
+                          Enter names
+                          </div>
+                </div>
+                <div class="col-sm-3">
+                    <!--<label>Credential Type</label>-->
+                    <select id="credType" class="form-control">
+                    <option disabled selected>-Cred Type-</option>
+
+                 </select>   
+                 <div class="invalid-feedback">Select a Cred Type</div>
+                </div>
+                <div class="col-sm-3">
+                  <!--<label for="organization">Last Name</label>-->
+                    <input id="organization" type="text" class="form-control validate" placeholder="Organization" value="">   
+                    
+                  
+                  <!--<label>Select Event</label>-->
+                  <!--  <select id="eventList" class="form-control" required>
+                     <option selected disabled>-Event-</option>
+                     
+                    </select> -->
+                   
+                   <div class="invalid-feedback">Select event</div>
+                </div> <!--END col-->
+
+                <div class="col-sm-2">
+                <!--<label>Add Guest</label> -->
+                    <button id="btnAddMulti" type="button" class="btn btn-dark align-bottom">Add Guests</button>
+                </div>
+                <!-- Diong it like below get the eID from the javascript, getting it from the server, and setting in html, to give back to the javascript
+                     to give it back to the server -->
+                 <input id="eventList" type="hidden" class="form-control validate" value="" readonly>
+                    
+            </div>
+            <!-- END ROW -->
+        </form>
+        
+    
+    </div>
+    <!-- CLOSE CONTAINER -->

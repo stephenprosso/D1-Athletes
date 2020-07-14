@@ -36,19 +36,19 @@ function getTableData(e) {
 }
 
 //**** EVENT DETAILS JS FUNCTION ****//
-function getTableTitle(ev) {
+function getTableTitle(e) {
 
 
   var ss = SpreadsheetApp.openByUrl(url);
   var ws = ss.getSheetByName("Events");
   var data = ws.getRange(2, 1, ws.getLastRow() - 1, 4).getValues();
 
-  var gridTitleArray = data.filter(function (r) { return r[0] == ev; }).map(function (r) {
+  var gridTitleArray = data.filter(function (r) { return r[0] == e.eventID; }).map(function (r) {
     var dateText = r[3].toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
     var displayDateArray = dateText.split(' ');
     //Logger.log(displayDateArray);
     var displayDate = displayDateArray[0] + ' ' + displayDateArray[1] + ' ' + displayDateArray[2];
-    return r[2] + " @ " + r[1] + " - " + displayDate
+    return r[2] + " @ " + r[1] + " - " + displayDate;
 
   });
 
@@ -74,6 +74,36 @@ function updateRecordById(recordInfo) {
   var newTimeData = [checkInDate, recordInfo.checkInState];
   workSheet.getRange(rowNumber, 6, 1, 2).setValues([newTimeData]);
   return workSheet.getRange(rowNumber, 6, 1, 2).getDisplayValues()[0];
+
+}
+/*function getEventID(e) {
+  var ss = SpreadsheetApp.openByUrl(url);
+  var ws = ss.getSheetByName("Events");
+  var 
+
+} */
+
+function loadEditList() {
+  
+  var spreadSheet = SpreadsheetApp.openByUrl(url);
+  var workSheet = spreadSheet.getSheetByName("Options");
+  var list = workSheet.getRange(1,1,workSheet.getRange("A1").getDataRegion().getLastRow(),1).getValues();
+  var options = list.map(function(r){return '<option>' + r[0] + '</option>'; }).join('');  
+  
+  var eventws = spreadSheet.getSheetByName("Event");
+  var eventList = eventws.getRange(2,1,eventws.getLastRow()-1,4).getValues();
+ 
+  // var eventList = eventws.getRange(2,1,workSheet.getRange("A2").getDataRegion().getLastRow(),4).getValues();
+  
+  var htmlEventListArray = eventList.map(function(r){return '<option value=\"' + r[0] + '\">'+ r[2] + ' @ '+ r[1] +'</option>'; }).join('');  
+  //var htmlEventListArray = eventList.map(function(r){return '<option>'+ ' ' + r[0] + ' ' + r[1] + ' '+ r[2] +' '+ r[3] + '</option>'; }).join('');  
+  //var ids = workSheet.getRange(2, 1,workSheet.getLastRow()-1,1).getValues().map(function(r){return r[0]});
+  
+  Logger.log(options);
+  //the eID was passed to loadEditlist as params. dropped that and pulled it from the query string
+  // return render("EditList", {list: htmlListArray, eID: params.event})
+
+  return render("EditList", {list: options })
 
 }
 
