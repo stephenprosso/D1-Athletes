@@ -20,17 +20,14 @@
   <div class="container">
     <nav id="navigation">
       <ul class="nav justify-content-center main-nav nav-menu">
-        <li class="nav-item nav-menu_link">
+        <!-- <li class="nav-item nav-menu_link">
           <div class="nav-link active" id="search-link">Search</div>
         </li>
         <li class="nav-item nav-menu_link">
           <div class="nav-link" id="add-athlete-link">Add Athlete</div>
-        </li>
+        </li> -->
         <li class="nav-item nav-menu_link">
           <div class="nav-link" id="events-link">Events</div>
-        </li>
-        <li class="nav-item nav-menu_link">
-          <div class="nav-link" id="event-details-link">Event Details</div>
         </li>
       </ul>
     </nav>
@@ -122,9 +119,6 @@
     }
 
 
-    
-
-
     //functions for click action events. ifthe target matches your class name run a function. if looking for an ID us # before the name
     function clickEventHandler(e) {
       //console.log(e);        
@@ -177,7 +171,7 @@
 
       dataArray.forEach(function (r) {
         var butt = document.getElementById("btnAddMulti");
-        butt.dataset.recrodId = r[7];
+        butt.dataset.recordId = r[7];
 
         var row = document.createElement("tr");
         //var col1 = document.createElement("td");
@@ -348,7 +342,10 @@
 
     function addMultiNames() {
  
-        var eventID = 1;
+        var eventButton = document.getElementById("btnAddMulti");
+        var eventID = eventButton.getAttribute("data-record-Id");
+        console.log(eventID);
+        
         var ctype = document.getElementById("credType").value;
         var org  = document.getElementById("organization").value;
         var checkinDate = '';
