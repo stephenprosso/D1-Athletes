@@ -319,13 +319,12 @@
     } //close function btnclick
     //.is-invalid and .is-valid  
 
-        function addMultiNamesTest() {      console.log("add multi names clicked!");}
     function addMultiNames() {
  
         var eventID = 1;
 
-        var ctype = "GA";
-        var org = "Gym Class";
+        var ctype = document.getElementById("credType").value;
+        var org  = document.getElementById("organization").value;
         var checkinDate = '';
         var checkBox = false;
 
@@ -340,18 +339,16 @@
 
         });
         console.log(data);
-        //document.getElementById("loading").classList.remove("d-none");
+        document.getElementById("loading").classList.remove("d-none");
         google.script.run.addMultiNames(data);
-        //document.getElementById("multiName").value = "";
-        //document.getElementById("organization").value = "";
+        document.getElementById("multiName").value = "";
+        document.getElementById("organization").value = "";
         //create cred type as a varialbe
-        //var credTypeSelect = document.getElementById("credType");
+        var credTypeSelect = document.getElementById("credType");
         //set selected index to 0 after data submitted
-        //credTypeSelect.selectedIndex = 0;
-        //var guestListSelect = document.getElementById("eventList");
-        //set selected index to 0 after data submitted
-        //guestListSelect.selectedIndex = 0;
-        //document.getElementById("loading").classList.add("d-none");
+        credTypeSelect.selectedIndex = 0;
+
+        document.getElementById("loading").classList.add("d-none");
 
 
     }
