@@ -90,16 +90,29 @@
       google.script.run.withSuccessHandler(generateTableTitle).getTableTitle(e);
 
     }
-    /*  function showAddGuest(){
-      
-        google.script.run.withSuccessHandler(addClassToButton).getEventID(e);
-      }
-      function addClassToButton(data){
-        var butt = document.getElementById("btnAddMulti");
-         butt.dataset.recrodId = r[0];
-      }*/
 
-    function addAthlete() {
+
+
+    function showAddGuest() {
+
+      var accessCode = prompt("Enter Access Code");
+
+      if (accessCode === "6969") {
+        document.getElementById("add-guest").classList.remove("d-none");
+        console.log(accessCode);
+        alert("You got it");
+        document.getElementById("seeAddGuest").classList.add("d-none");
+      } else {
+
+        alert("You got problems pal");
+
+      }
+
+
+    }
+
+
+    /*function addAthlete() {
       var customerInfo = {};
       customerInfo.firstName = document.getElementById("fname").value;
       customerInfo.lastName = document.getElementById("lname").value;
@@ -116,22 +129,21 @@
 
       }).addCustomer(customerInfo);
 
-    }
+    }*/
 
 
     //functions for click action events. ifthe target matches your class name run a function. if looking for an ID us # before the name
     function clickEventHandler(e) {
       //console.log(e);        
       if (e.target.classList.contains("card-body")) {
-        //gonna drop this
-        //variable below and just call the target.
-        //var eventId= e.target.dataset.recordId;
-        
         console.log(e);
         loadEventDetailsView(e);
       } if (e.target.matches("#btnAddMulti")) {
-        //console.log("Shit-Pants");
         btnclickAddMultiValidate();
+
+      } if (e.target.matches("#seeAddGuest")) {
+        console.log("Shit-Pants");
+        showAddGuest();
       }
 
       if (e.target.classList.contains("cb")) {
@@ -311,71 +323,71 @@
       }
 
     } //close function btnclick
-       //.is-invalid and .is-valid  
-   
-      function checkIfValid(elID, message) {
+    //.is-invalid and .is-valid  
+
+    function checkIfValid(elID, message) {
       var elToValidate = document.getElementById(elID);
       var isValid = false;
       console.log("Start validating");
       console.log(elToValidate.tagName);
-      switch(elToValidate.tagName) {
-       
-              case "INPUT":
-                  isValid = elToValidate.checkValidity();
-                  isValid ? elToValidate.classList.remove("is-invalid") : elToValidate.classList.add("is-invalid");
-                break;
-              case "SELECT":
-                  isValid = elToValidate.selectedIndex === 0 ? false : true;
-                  isValid ? elToValidate.classList.remove("is-invalid") : elToValidate.classList.add("is-invalid");
-                break;
-              case "TEXTAREA":
-                  isValid = elToValidate.checkValidity();
-                  isValid ? elToValidate.classList.remove("is-invalid") : elToValidate.classList.add("is-invalid");
-                break;
-              default:
-                // code block
-            }
-      
-     return isValid;
-    
+      switch (elToValidate.tagName) {
+
+        case "INPUT":
+          isValid = elToValidate.checkValidity();
+          isValid ? elToValidate.classList.remove("is-invalid") : elToValidate.classList.add("is-invalid");
+          break;
+        case "SELECT":
+          isValid = elToValidate.selectedIndex === 0 ? false : true;
+          isValid ? elToValidate.classList.remove("is-invalid") : elToValidate.classList.add("is-invalid");
+          break;
+        case "TEXTAREA":
+          isValid = elToValidate.checkValidity();
+          isValid ? elToValidate.classList.remove("is-invalid") : elToValidate.classList.add("is-invalid");
+          break;
+        default:
+        // code block
+      }
+
+      return isValid;
+
     } // close function CheckIfValid 
 
     function addMultiNames() {
- 
-        var eventButton = document.getElementById("btnAddMulti");
-        var eventID = eventButton.getAttribute("data-record-Id");
-        console.log(eventID);
-        
-        var ctype = document.getElementById("credType").value;
-        var org  = document.getElementById("organization").value;
-        var checkinDate = '';
-        var checkBox = false;
-        var userInput = document.getElementById("multiName").value.trim();
-        var names = userInput.split("\n");
-        var data = [];
-        names.forEach(function (n) {
-          var combinedName = n.split(" ");
-          data.push([combinedName[0], combinedName[1], ctype, org, checkinDate, checkBox, eventID]);
-        });
-        console.log(data);
-        document.getElementById("loading").classList.remove("d-none");
-        google.script.run.addMultiNames(data);
-        document.getElementById("multiName").value = "";
-        document.getElementById("organization").value = "";
-        //create cred type as a varialbe
-        var credTypeSelect = document.getElementById("credType");
-        //set selected index to 0 after data submitted
-        credTypeSelect.selectedIndex = 0;
 
-        document.getElementById("loading").classList.add("d-none");
+      var eventButton = document.getElementById("btnAddMulti");
+      var eventID = eventButton.getAttribute("data-record-Id");
+      console.log(eventID);
+
+      var ctype = document.getElementById("credType").value;
+      var org = document.getElementById("organization").value;
+      var checkinDate = '';
+      var checkBox = false;
+      var userInput = document.getElementById("multiName").value.trim();
+      var names = userInput.split("\n");
+      var data = [];
+      names.forEach(function (n) {
+        var combinedName = n.split(" ");
+        data.push([combinedName[0], combinedName[1], ctype, org, checkinDate, checkBox, eventID]);
+      });
+      console.log(data);
+      document.getElementById("loading").classList.remove("d-none");
+      google.script.run.addMultiNames(data);
+      document.getElementById("multiName").value = "";
+      document.getElementById("organization").value = "";
+      //create cred type as a varialbe
+      var credTypeSelect = document.getElementById("credType");
+      //set selected index to 0 after data submitted
+      credTypeSelect.selectedIndex = 0;
+
+      document.getElementById("loading").classList.add("d-none");
 
 
     }
 
     //event listeners for the tabs. on click will call the respective load view
     document.getElementById("events-link").addEventListener("click", loadEventsView);
-    document.getElementById("search-link").addEventListener("click", loadSearchView);
-    document.getElementById("add-athlete-link").addEventListener("click", loadAddAthleteView);
+    //document.getElementById("search-link").addEventListener("click", loadSearchView);
+    //document.getElementById("add-athlete-link").addEventListener("click", loadAddAthleteView);
 
   </script>
 </body>
