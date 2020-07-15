@@ -95,18 +95,18 @@
 
     function showAddGuest() {
 
-      var accessCode = prompt("Enter Access Code");
+      //var accessCode = prompt("Enter Access Code");
 
-      if (accessCode === "6969") {
+     // if (accessCode === "6969") {
         document.getElementById("add-guest").classList.remove("d-none");
-        console.log(accessCode);
-        alert("You got it");
+     //   console.log(accessCode);
+      //  alert("You got it");
         document.getElementById("seeAddGuest").classList.add("d-none");
-      } else {
+    //  } else {
 
-        alert("You got problems pal");
+      //  alert("You got problems pal");
 
-      }
+    //  }
 
 
     }
@@ -178,9 +178,10 @@
     //event listeners for actions happening inside our "APP" div
     document.getElementById("app").addEventListener("click", clickEventHandler);
     document.addEventListener("DOMContentLoaded", loadEventsView);
+    
     function generateTable(dataArray) {
       var tbody = document.getElementById("table-body");
-
+         $('#table-body').empty();
       dataArray.forEach(function (r) {
         var butt = document.getElementById("btnAddMulti");
         butt.dataset.recordId = r[7];
@@ -238,6 +239,10 @@
         row.appendChild(col7);
         tbody.appendChild(row);
       });
+      
+      var eventButton = document.getElementById("btnAddMulti");
+      var eventID = eventButton.getAttribute("data-record-Id");
+      google.script.run.withSuccessHandler(generateTable).reGetTableData(eventID);
 
     }
 
@@ -299,32 +304,23 @@
 
     function btnclickAddMultiValidate() {
       var toValidate = {
-
-
         credType: "Cred Type Required",
         eventList: "Select Event Required",
         multiName: "Names Required"
       };
-
       var idKeys = Object.keys(toValidate);
-
       var allValid = true;
       idKeys.forEach(function (id) {
         var isValid = checkIfValid(id, toValidate[id]);
         if (!isValid) {
-
           allValid = false;
         }
       });
-
       if (allValid) {
-
         addMultiNames();
       }
-
     } //close function btnclick
     //.is-invalid and .is-valid  
-
     function checkIfValid(elID, message) {
       var elToValidate = document.getElementById(elID);
       var isValid = false;
@@ -347,13 +343,10 @@
         default:
         // code block
       }
-
       return isValid;
-
     } // close function CheckIfValid 
 
     function addMultiNames() {
-
       var eventButton = document.getElementById("btnAddMulti");
       var eventID = eventButton.getAttribute("data-record-Id");
       console.log(eventID);
@@ -370,7 +363,7 @@
         data.push([combinedName[0], combinedName[1], ctype, org, checkinDate, checkBox, eventID]);
       });
       console.log(data);
-      document.getElementById("loading").classList.remove("d-none");
+      //document.getElementById("loading").classList.remove("d-none");
       google.script.run.addMultiNames(data);
       document.getElementById("multiName").value = "";
       document.getElementById("organization").value = "";
@@ -378,10 +371,7 @@
       var credTypeSelect = document.getElementById("credType");
       //set selected index to 0 after data submitted
       credTypeSelect.selectedIndex = 0;
-
-      document.getElementById("loading").classList.add("d-none");
-
-
+      //document.getElementById("loading").classList.add("d-none");
     }
 
     //event listeners for the tabs. on click will call the respective load view

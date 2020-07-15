@@ -35,6 +35,23 @@ function getTableData(e) {
 
 }
 
+function reGetTableData(eventID) {
+
+
+  var ss = SpreadsheetApp.openByUrl(url);
+  var ws = ss.getSheetByName("Data");
+  var data = ws.getRange(2, 1, ws.getLastRow() - 1, 8).getDisplayValues();
+  //Logger.log(data);
+  data = data.filter(function (r) {
+    return r[7] == eventID;
+  });
+  Logger.log("data : " + data);
+  return data;
+
+}
+
+
+
 //**** EVENT DETAILS JS FUNCTION ****//
 function getTableTitle(e) {
 
