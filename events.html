@@ -1,0 +1,70 @@
+<div id="all-cards-container" class="container">
+  <div class="row" align="center">
+    <div class="col-sm-12">
+      <h1>Upcoming Events</h1>
+    </div>
+    <div class="row" id="card-group">
+    </div>
+  </div>
+  <!-- CLOSE ROW -->
+</div>
+<!-- CLOSE CONTAINER -->
+<div>
+    <button id="seeAddEvent" type="button" class="btn btn-dark align-bottom">Add Event</button>
+</div>
+
+<div id="add-event-container" class="container d-none">
+<div class="row" align="center">
+    <div class="col-sm-12">
+        <h2>Create Event</h2>
+    </div>
+</div>
+<form>
+    <div class="row form-group">
+        <div class="col-sm-6">
+            <label for="venueName">Venue</label>
+            <input id="venueName" type="text" class="form-control validate" required>
+            <div class="invalid-feedback">
+               Please enter venue name.
+              </div>
+
+        </div>
+        <div class="col-sm-6">
+            <label for="eventName">Headline Act</label>
+            <input id="eventName" type="text" class="form-control validate" required>
+            <div class="invalid-feedback">
+               Please enter the name of event or headline act.
+              </div>
+
+        </div>
+    </div>
+    <!-- CLOSE ROW -->
+
+
+    
+    <div class="row">
+     <div class="col-sm-4">
+      <div class="input-group date">
+       <input id="startDate" type="text" class="form-control" placeholder="Select Date" required>
+        <div class="input-group-append input-group-addon">
+            <span class="input-group-text material-icons glyphicon glyphicon-th">schedule</span>
+        </div>
+        <div class="invalid-feedback">
+               Please Select A Date
+              </div>
+       </div>
+    </div>
+       <div class="col-sm-4">
+            
+            <input id="eventImage" type="text" class="form-control validate" placeholder="Link to event Image">
+
+        </div>
+       
+       <div class="col-sm-4">
+            <button id="addEvent" type="button" class="align-bottom btn btn-dark">Create Event</button>
+        </div>
+    </div>
+    <!-- CLOSE ROW -->
+</form>
+</div>
+<!-- CLOSE CONTAINER -->

@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.standalone.min.css"
+    integrity="sha256-jO7D3fIsAq+jB8Xt3NI5vBf3k4tvtHwzp8ISLQG4UWU=" crossorigin="anonymous" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <?!= include("index-css"); ?>
+</head>
+
+<body>
+  <div class="container">
+    <nav id="navigation">
+      <ul class="nav justify-content-center main-nav nav-menu">
+        <!-- <li class="nav-item nav-menu_link">
+          <div class="nav-link active" id="search-link">Search</div>
+        </li>
+        <li class="nav-item nav-menu_link">
+          <div class="nav-link" id="add-athlete-link">Add Athlete</div>
+        </li> -->
+        <li class="nav-item nav-menu_link">
+          <div class="nav-link" id="events-link">Events</div>
+        </li>
+      </ul>
+    </nav>
+
+    <div id="app"></div>
+    <!-- Content Here! -->
+
+  </div>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+    crossorigin="anonymous"></script>
+
+  <script>
+    var data;
+    function loadView(options) {
+      var id = typeof options.id === "undefined" ? "app" : options.id;
+      var cb = typeof options.callback === "undefined" ? function () { } : options.callback;
+      //var param = typeof options.param ==="undefined" ? function () { } : options.param;
+
+      google.script.run.withSuccessHandler(function (html) {
+        document.getElementById(id).innerHTML = html;
+        typeof options.params === "undefined" ? cb() : cb(options.params);
+      })[options.func]();
+    }
+
+    function loadSearchView() {
+      //loadView({func: "loadSearchView", callback: setDataForSearch });
+      loadView({ func: "loadSearchView" });
+    }
+
+    function loadAddAthleteView() {
+      loadView({ func: "loadAddAthleteView" });
+    }
+    //not being used. must pass aprameters
+    function loadEventsView() {
+      //next step will be to pass some params for the eventID
+      loadView({ func: "loadEventsView", callback: populateEvents });
+    }
+
+    function loadEventDetailsView(e) {
+      loadView({ func: "loadEventDetailsView", callback: populateEventDetails, params: { eventID: e.target.dataset.recordId } });
+      console.log(e);
+    }
+
+    function populateEvents() {
+      google.script.run.withSuccessHandler(generateEventCard).getEventTableData();
+    }
+
+    function populateEventDetails(e) {
+      console.log(e);
+      google.script.run.withSuccessHandler(generateTable).getTableData(e);
+      google.script.run.withSuccessHandler(generateTableTitle).getTableTitle(e);
+
+    }
+
+
+
+    function showAddGuest() {
+
+      //var accessCode = prompt("Enter Access Code");
+      // if (accessCode === "6969") {
+      document.getElementById("add-guest-container").classList.remove("d-none");
+      //   console.log(accessCode);
+      //  alert("You got it");
+      document.getElementById("seeAddGuest").classList.add("d-none");
+
+      //  } else {
+
+      //  alert("You got problems pal");
+
+      //  }
+
+    }
+
+    function showAddEvent() {
+
+      //var accessCode = prompt("Enter Access Code");
+
+      // if (accessCode === "6969") {
+      document.getElementById("add-event-container").classList.remove("d-none");
+      //   console.log(accessCode);
+      //  alert("You got it");
+      document.getElementById("seeAddEvent").classList.add("d-none");
+      document.getElementById("all-cards-container").classList.add("d-none");
+      //  } else {
+      //  alert("You got problems pal");
+      //  }
+    }
+
+
+    //functions for click action events. ifthe target matches your class name run a function. if looking for an ID us # before the name
+    function clickEventHandler(e) {
+      //console.log(e);        
+      if (e.target.classList.contains("card-body")) {
+        console.log(e);
+        loadEventDetailsView(e);
+      } if (e.target.matches("#btnAddMulti")) {
+        btnclickAddMultiValidate();
+
+      } if (e.target.matches("#seeAddGuest")) {
+
+        showAddGuest();
+      } if (e.target.matches("#seeAddEvent")) {
+
+        showAddEvent();
+      }
+
+      if (e.target.matches("#addEvent")) {
+        console.log("Shit-Pants");
+        validateAddEvent();
+      }
+
+
+      if (e.target.classList.contains("cb")) {
+        e.target.nextElementSibling.classList.remove("d-none");
+        e.target.nextElementSibling.nextElementSibling.classList.remove("d-none");
+      }
+      if (e.target.classList.contains("classCancel")) {
+        e.target.previousElementSibling.previousElementSibling.checked = e.target.dataset.initialState == "true" ? true : false;
+        e.target.classList.add("d-none");
+        e.target.previousElementSibling.classList.add("d-none");
+      } // if we click cancel
+
+      if (e.target.classList.contains("classSave")) {
+        var recordInfo = {};
+        recordInfo.id = e.target.dataset.recordId;
+        recordInfo.checkInState = e.target.previousElementSibling.checked;
+        console.log(recordInfo.checkInState);
+        document.getElementById("loading").classList.remove("d-none");
+        google.script.run.withSuccessHandler(function (newDate) {
+          console.log(newDate);
+          e.target.nextElementSibling.dataset.initialState = newDate[1] == "TRUE" ? true : false;
+          console.log(e.target.nextElementSibling.dataset.initialState);
+          var timeStampColumn = e.target.closest(".checkBoxButtons").previousElementSibling;
+          console.log(timeStampColumn);
+          timeStampColumn.textContent = newDate[0];
+          e.target.classList.add("d-none");
+          e.target.nextElementSibling.classList.add("d-none");
+          document.getElementById("loading").classList.add("d-none");
+        }).updateRecordById(recordInfo);
+      } //if we click save
+    }
+    //event listeners for actions happening inside our "APP" div
+    document.getElementById("app").addEventListener("click", clickEventHandler);
+    document.addEventListener("DOMContentLoaded", loadEventsView);
+
+    function generateTable(dataArray) {
+      var tbody = document.getElementById("table-body");
+      //$('#table-body').empty();
+      dataArray.forEach(function (r) {
+        var butt = document.getElementById("btnAddMulti");
+        butt.dataset.recordId = r[7];
+
+        var row = document.createElement("tr");
+        //var col1 = document.createElement("td");
+        //col1.textContent = r[0];
+        var col2 = document.createElement("td");
+        col2.textContent = r[1];
+        var col3 = document.createElement("td");
+        col3.textContent = r[2];
+        var col4 = document.createElement("td");
+        col4.textContent = r[3];
+        //the time and the check box need to side by side time LEFT and check box on RIGHT
+        var col5 = document.createElement("td");
+        col5.textContent = r[4];
+        var col6 = document.createElement("td");
+        col6.textContent = r[5];
+        col6.classList.add("timeStamp");
+        var col7 = document.createElement("td");
+        col7.classList.add("checkBoxButtons");
+        var checkBox = document.createElement("input");
+        checkBox.type = "checkbox";
+        checkBox.value = r[6];
+        checkBox.dataset.recordId = r[0];
+        checkBox.classList.add("cb");
+        checkBox.checked = r[6] == "TRUE" ? true : false;
+        col7.appendChild(checkBox);
+        var saveButton = document.createElement("button");
+        saveButton.textContent = "Save";
+        saveButton.classList.add("classSave");
+        saveButton.classList.add("ml-2");
+        saveButton.classList.add("d-none");
+        saveButton.classList.add("btn");
+        saveButton.classList.add("btn-dark");
+        saveButton.classList.add("btn-sm");
+        saveButton.dataset.recordId = r[0];
+        var cancelButton = document.createElement("button");
+        cancelButton.textContent = "Cancel";
+        cancelButton.classList.add("classCancel");
+        cancelButton.classList.add("ml-2");
+        cancelButton.classList.add("d-none");
+        cancelButton.classList.add("btn");
+        cancelButton.classList.add("btn-dark");
+        cancelButton.classList.add("btn-sm");
+        cancelButton.dataset.initialState = r[6] == "TRUE" ? true : false;
+
+        col7.appendChild(saveButton);
+        col7.appendChild(cancelButton);
+        row.appendChild(col2);
+        row.appendChild(col3);
+        row.appendChild(col4);
+        row.appendChild(col5);
+        row.appendChild(col6);
+        row.appendChild(col7);
+        tbody.appendChild(row);
+      });
+      //with this method the running of this function will never end :(
+      //var eventButton = document.getElementById("btnAddMulti");
+      //var eventID = eventButton.getAttribute("data-record-Id");
+      //google.script.run.withSuccessHandler(generateTable).reGetTableData(eventID);
+
+    }
+
+    function generateTableTitle(title) {
+      console.log(title);
+      document.getElementById("title").innerHTML = title;
+
+    }
+
+    function generateEventCard(dataArray) {
+      console.log(dataArray);
+
+
+      dataArray.forEach(function (r) {
+
+        var cardHolder = document.createElement("div");
+        cardHolder.classList.add("col-sm-4");
+        var cardLink = document.createElement("div");
+        cardLink.classList.add("cardLinkClass");
+        cardLink.dataset.recordId = r[0];
+
+        var card = document.createElement("div");
+        card.classList.add("card");
+        card.classList.add("cardStyle");
+        var image = document.createElement("img");
+        image.classList.add("card-img-top");
+        image.classList.add("photo-size");
+        image.src = r[4];
+
+        var cardbody = document.createElement("div");
+        cardbody.classList.add("card-body");
+        cardbody.dataset.recordId = r[0];
+
+        //var eventID = document.createElement("p");
+        //eventID.textContent = r[0];
+        //console.log(eventID.dataset.recordId);
+        var venue = document.createElement("H4");
+        venue.textContent = r[1];
+        var eventName = document.createElement("H3");
+        eventName.textContent = r[2];
+        var date = document.createElement("p");
+        date.textContent = r[3];
+
+        cardbody.appendChild(eventName);
+        cardbody.appendChild(venue);
+        cardbody.appendChild(date);
+        //cardbody.appendChild(eventID);
+        card.appendChild(image);
+        card.appendChild(cardbody);
+        cardLink.appendChild(card);
+
+        console.log(card);
+        cardHolder.appendChild(cardLink);
+        document.getElementById("card-group").appendChild(cardHolder);
+
+      });
+
+    }
+
+    function validateAddEvent() {
+
+      var toValidate = {
+        venueName: "First Name Required",
+        eventName: "Last Name Required",
+        startDate: "Cred Type Required"
+
+      };
+
+      var idKeys = Object.keys(toValidate);
+
+      var allValid = true;
+      idKeys.forEach(function (id) {
+        var isValid = checkIfValid(id, toValidate[id]);
+        if (!isValid) {
+
+          allValid = false;
+        }
+      });
+      if (allValid) {
+        addEvent();
+      }
+    } //close function btnclick
+
+    function btnclickAddMultiValidate() {
+      var toValidate = {
+        credType: "Cred Type Required",
+        eventList: "Select Event Required",
+        multiName: "Names Required"
+      };
+      var idKeys = Object.keys(toValidate);
+      var allValid = true;
+      idKeys.forEach(function (id) {
+        var isValid = checkIfValid(id, toValidate[id]);
+        if (!isValid) {
+          allValid = false;
+        }
+      });
+      if (allValid) {
+        addMultiNames();
+      }
+    } //close function btnclick
+    //.is-invalid and .is-valid  
+    function checkIfValid(elID, message) {
+      var elToValidate = document.getElementById(elID);
+      var isValid = false;
+      console.log("Start validating");
+      console.log(elToValidate.tagName);
+      switch (elToValidate.tagName) {
+
+        case "INPUT":
+          isValid = elToValidate.checkValidity();
+          isValid ? elToValidate.classList.remove("is-invalid") : elToValidate.classList.add("is-invalid");
+          break;
+        case "SELECT":
+          isValid = elToValidate.selectedIndex === 0 ? false : true;
+          isValid ? elToValidate.classList.remove("is-invalid") : elToValidate.classList.add("is-invalid");
+          break;
+        case "TEXTAREA":
+          isValid = elToValidate.checkValidity();
+          isValid ? elToValidate.classList.remove("is-invalid") : elToValidate.classList.add("is-invalid");
+          break;
+        default:
+        // code block
+      }
+      return isValid;
+    } // close function CheckIfValid 
+
+    function addMultiNames() {
+      var eventButton = document.getElementById("btnAddMulti");
+      var eventID = eventButton.getAttribute("data-record-Id");
+      console.log(eventID);
+
+      var ctype = document.getElementById("credType").value;
+      var org = document.getElementById("organization").value;
+      var checkinDate = '';
+      var checkBox = false;
+      var userInput = document.getElementById("multiName").value.trim();
+      var names = userInput.split("\n");
+      var data = [];
+      names.forEach(function (n) {
+        var combinedName = n.split(" ");
+        data.push([combinedName[0], combinedName[1], ctype, org, checkinDate, checkBox, eventID]);
+      });
+      console.log(data);
+      //document.getElementById("loading").classList.remove("d-none");
+      google.script.run.addMultiNames(data);
+      document.getElementById("multiName").value = "";
+      document.getElementById("organization").value = "";
+      //create cred type as a varialbe
+      var credTypeSelect = document.getElementById("credType");
+      //set selected index to 0 after data submitted
+      credTypeSelect.selectedIndex = 0;
+      //document.getElementById("loading").classList.add("d-none");
+    }
+
+    function addEvent() {
+      var userInfo = {};
+
+      userInfo.vname = document.getElementById("venueName").value;
+      userInfo.ename = document.getElementById("eventName").value;
+      userInfo.sdate = document.getElementById("startDate").value;
+      userInfo.eimage = document.getElementById("eventImage").value;
+      //run the user click pass the array of data.
+      google.script.run.addEvent(userInfo);
+      //clear the fields
+      document.getElementById("venueName").value = "";
+      document.getElementById("eventName").value = "";
+      document.getElementById("eventImage").value = "";
+      //$('#startDate').datepicker('setDate', null);
+    }
+
+    //event listeners for the tabs. on click will call the respective load view
+    document.getElementById("events-link").addEventListener("click", loadEventsView);
+    //document.getElementById("search-link").addEventListener("click", loadSearchView);
+    //document.getElementById("add-athlete-link").addEventListener("click", loadAddAthleteView);
+
+  </script>
+</body>
+
+</html>
