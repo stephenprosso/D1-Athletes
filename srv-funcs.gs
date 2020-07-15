@@ -43,7 +43,8 @@ function getTableTitle(e) {
   var ws = ss.getSheetByName("Events");
   var data = ws.getRange(2, 1, ws.getLastRow() - 1, 4).getValues();
 
-  var gridTitleArray = data.filter(function (r) { return r[0] == e.eventID; }).map(function (r) {
+  // var gridTitleArray = data.filter(function (r) { return r[0] == e.eventID; }).map(function (r) {
+  var gridTitleArray = data.filter(r => r[0] == e.eventID ).map(function (r) {
     var dateText = r[3].toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
     var displayDateArray = dateText.split(' ');
     //Logger.log(displayDateArray);
@@ -60,7 +61,7 @@ function getTableTitle(e) {
 function updateRecordById(recordInfo) {
   var spreadSheet = SpreadsheetApp.openByUrl(url);
   var workSheet = spreadSheet.getSheetByName("Data");
-  var ids = workSheet.getRange(2, 1, workSheet.getLastRow() - 1, 1).getValues().map(function (r) { return r[0] });
+  var ids = workSheet.getRange(2, 1, workSheet.getLastRow() - 1, 1).getValues().map(r => r[0]);
   var positionInArray = ids.indexOf(parseInt(recordInfo.id));
   var rowNumber = positionInArray === -1 ? 0 : positionInArray + 2;
   var oldTimeData = workSheet.getRange(rowNumber, 6).getValue();
@@ -88,7 +89,7 @@ function loadOptions() {
   var spreadSheet = SpreadsheetApp.openByUrl(url);
   var workSheet = spreadSheet.getSheetByName("Options");
   var list = workSheet.getRange(1, 1, workSheet.getRange("A1").getDataRegion().getLastRow(), 1).getValues();
-  var options = list.map(function (r) { return '<option>' + r[0] + '</option>'; }).join('');
+  var options = list.map(r => '<option>' + r[0] + '</option>').join('');
   Logger.log(options);
 
   return { list: options }
@@ -99,7 +100,7 @@ function addMultiNames(dataArray) {
 
   var spreadSheet = SpreadsheetApp.openByUrl(url);
   var workSheet = spreadSheet.getSheetByName("Data");
-  var ids = workSheet.getRange(2, 1, workSheet.getLastRow() - 1, 1).getValues().map(function (r) { return r[0] });
+  var ids = workSheet.getRange(2, 1, workSheet.getLastRow() - 1, 1).getValues().map(r => r[0]);
 
   //find the max id from this list
   var maxID = Math.max.apply(null, ids);
