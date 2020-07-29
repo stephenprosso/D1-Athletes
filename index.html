@@ -36,7 +36,16 @@
     <div id="app"></div>
     <!-- Content Here! -->
 
-  </div>
+     </div>
+    <!-- start Loading Spinner -->
+    <div id="loading" class="d-none">
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+    <!-- END Loading Spinner -->
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -71,9 +80,8 @@
     function loadAddAthleteView() {
       loadView({ func: "loadAddAthleteView" });
     }
-    //not being used. must pass aprameters
+
     function loadEventsView() {
-      //next step will be to pass some params for the eventID
       loadView({ func: "loadEventsView", callback: populateEvents });
     }
 
@@ -98,7 +106,7 @@
     function showAddGuest() {
 
       //var accessCode = prompt("Enter Access Code");
-      // if (accessCode === "6969") {
+      // if (accessCode === "939") {
       document.getElementById("add-guest-container").classList.remove("d-none");
       //   console.log(accessCode);
       //  alert("You got it");
@@ -110,7 +118,7 @@
 
     function showAddEvent() {
       //var accessCode = prompt("Enter Access Code");
-      // if (accessCode === "6969") {
+      // if (accessCode === "939") {
       document.getElementById("add-event-container").classList.remove("d-none");
       //   console.log(accessCode);
       //  alert("You got it");
