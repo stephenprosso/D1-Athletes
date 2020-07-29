@@ -103,19 +103,13 @@
       //   console.log(accessCode);
       //  alert("You got it");
       document.getElementById("seeAddGuest").classList.add("d-none");
-
       //  } else {
-
       //  alert("You got problems pal");
-
       //  }
-
     }
 
     function showAddEvent() {
-
       //var accessCode = prompt("Enter Access Code");
-
       // if (accessCode === "6969") {
       document.getElementById("add-event-container").classList.remove("d-none");
       //   console.log(accessCode);
@@ -125,6 +119,16 @@
       //  } else {
       //  alert("You got problems pal");
       //  }
+    }
+    
+    function hideAddEvent() {
+      document.getElementById("add-event-container").classList.add("d-none");
+      document.getElementById("seeAddEvent").classList.remove("d-none");
+      document.getElementById("all-cards-container").classList.remove("d-none");
+      document.getElementById("venueName").value = "";
+      document.getElementById("eventName").value = "";
+      document.getElementById("eventImage").value = "";
+      document.getElementById("startDate").value = "";
     }
 
 
@@ -143,7 +147,10 @@
       } if (e.target.matches("#seeAddEvent")) {
 
         showAddEvent();
-      }
+      }if (e.target.matches("#cancelAddEvent")) {
+
+        hideAddEvent();
+      }     
 
       if (e.target.matches("#addEvent")) {
         console.log("Shit-Pants");
@@ -264,7 +271,7 @@
       dataArray.forEach(function (r) {
 
         var cardHolder = document.createElement("div");
-        cardHolder.classList.add("col-sm-4");
+        cardHolder.classList.add("col-sm-3");
         var cardLink = document.createElement("div");
         cardLink.classList.add("cardLinkClass");
         cardLink.dataset.recordId = r[0];
