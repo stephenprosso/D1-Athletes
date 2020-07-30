@@ -40,9 +40,9 @@
   <!-- start Loading Spinner -->
 
   <div id="loading" class="d-flex justify-content-center align-items-center invisible">
-      <div class="spinner-grow" role="status">
-          <span class="sr-only">Loading...</span>
-      </div>
+    <div class="spinner-grow" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
   </div>
 
   <!-- END Loading Spinner -->
@@ -84,7 +84,6 @@
 
     function loadEventDetailsView(e) {
       loadView({ func: "loadEventDetailsView", callback: populateEventDetails, params: { eventID: e.target.dataset.recordId } });
-      console.log(e);
     }
 
     function populateEvents() {
@@ -102,36 +101,36 @@
 
     //functions for click action events. ifthe target matches your class name run a function. if looking for an ID use # before the name
     function clickEventHandler(e) {
-       
+
       if (e.target.classList.contains("card-body")) {
-   
+
         loadEventDetailsView(e);
-        
+
       } if (e.target.matches("#btnAddMulti")) {
-      
+
         btnclickAddMultiValidate();
-        
+
       } if (e.target.matches("#seeAddGuest")) {
-      
+
         showAddGuest();
-        
+
       } if (e.target.matches("#seeAddEvent")) {
-      
+
         showAddEvent();
-        
+
       } if (e.target.matches("#cancelAddEvent")) {
 
         hideAddEvent();
       }
 
       if (e.target.matches("#addEvent")) {
-      
+
         validateAddEvent();
-        
-      } if (e.target.classList.contains("classDeleteList")){
-      
-        console.log("deleteEvent");
-      
+
+      } if (e.target.classList.contains("classDeleteList")) {
+
+        deleteEvent(e);
+
       } if (e.target.classList.contains("cb")) {
         e.target.nextElementSibling.classList.remove("d-none");
         e.target.nextElementSibling.nextElementSibling.classList.remove("d-none");
@@ -168,11 +167,13 @@
     function generateTable(dataArray) {
       var tbody = document.getElementById("table-body");
       //$('#table-body').empty();
-      
+
       //need to add an if statement to call showAddGuest(); if not rows 
       dataArray.forEach(function (r) {
         var butt = document.getElementById("btnAddMulti");
         butt.dataset.recordId = r[7];
+        var buttDelete = document.getElementById("btnDeleteEvent");
+        buttDelete.dataset.recordId = r[7];
 
         var row = document.createElement("tr");
         //var col1 = document.createElement("td");
@@ -243,8 +244,8 @@
 
     function generateEventCard(dataArray) {
       console.log(dataArray);
-     //am I doing this right?
-        $('#card-group').empty();
+      //am I doing this right?
+      $('#card-group').empty();
 
 
       dataArray.forEach(function (r) {
@@ -398,7 +399,7 @@
       userInfo.eimage = document.getElementById("eventImage").value;
       //run the user click pass the array of data.
       loadingStart();
-      google.script.run.withSuccessHandler(function(){
+      google.script.run.withSuccessHandler(function () {
         //clear the fields
         document.getElementById("venueName").value = "";
         document.getElementById("eventName").value = "";
@@ -406,52 +407,30 @@
         //$('#startDate').datepicker('setDate', null);
         google.script.run.withSuccessHandler(generateEventCard).getEventTableData();
         hideAddEvent();
-        loadingEnd();   
       }).addEvent(userInfo);
 
     }
-    
-    function deleteEvent(){
-    
-       
-        
-        
-        
-  
-                  var confirmation = confirm("This will delete the event and all of the event guest data. Are you sure you want to delete everything?");
-                        if (confirmation === true) {
-                        
-                        //if they click save we will save the data in an empty object
-                        //create empty object recordInfo
-                        var recordInfo = {};
-                        //add an ID to the empty recordInfo Object. this is = to the recordID in the dataSet,of the target that was clicked on. 
-                        //the recrodID is et below when the table is populated
-                        recordInfo.id = e.target.dataset.recordId;
-                     
-                        //show the loading div 
-                        //document.getElementById("loading").classList.remove("d-none");
-                        //the below googe script function calls a function in your GS page. on success it will call the function in the call back.
-                        document.getElementById("loading").classList.remove("d-none");
-                        google.script.run.withSuccessHandler(function() {
-                           e.target.closest(".classRow").remove();
-                           //make sure you add this in the HTML
-                      document.getElementById("loading").classList.add("d-none");
 
-            }).deleteEventById(recordInfo);
-            
-                        } else {
-                          return false;
-                        }
-                       
-          
-            
-        
+    function deleteEvent(e) {
 
-    
-    
-    
+      var confirmation = confirm("This will delete the event and all of the event guest data. Are you sure you want to delete everything?");
+      if (confirmation === true) {
+      
+        var recordInfo = {};
+        recordInfo.id = e.target.dataset.recordId;
+        loadingStart();
+        
+        google.script.run.withSuccessHandler(function () {
+          loadEventsView();     
+
+        }).deleteEventById(recordInfo);
+
+      } else {
+        return false;
+      }
     }
-        function showAddGuest() {
+    
+    function showAddGuest() {
 
       //var accessCode = prompt("Enter Access Code");
       // if (accessCode === "939") {
@@ -487,13 +466,13 @@
       document.getElementById("startDate").value = "";
     }
 
-    function loadingStart(){
-        document.getElementById("loading").classList.remove("invisible");
-      }
-      
-      function loadingEnd(){
-      document.getElementById("loading").classList.add("invisible");     
-      }
+    function loadingStart() {
+      document.getElementById("loading").classList.remove("invisible");
+    }
+
+    function loadingEnd() {
+      document.getElementById("loading").classList.add("invisible");
+    }
 
     //event listeners for the tabs. on click will call the respective load view
     document.getElementById("events-link").addEventListener("click", loadEventsView);

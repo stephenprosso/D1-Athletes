@@ -22,7 +22,7 @@ function getTableData(e) {
 
 }
 
-function reGetTableData(eventID) {
+/*function reGetTableData(eventID) {
   var ss = SpreadsheetApp.openByUrl(url);
   var ws = ss.getSheetByName("Data");
   var data = ws.getRange(2, 1, ws.getLastRow() - 1, 8).getDisplayValues();
@@ -33,7 +33,7 @@ function reGetTableData(eventID) {
   Logger.log("data : " + data);
   return data;
 
-}
+}*/
 
 
 
@@ -77,7 +77,7 @@ function updateRecordById(recordInfo) {
   return workSheet.getRange(rowNumber, 6, 1, 2).getDisplayValues()[0];
 
 }
-
+//this isnt working. need help
 function loadOptions() {
 
   var spreadSheet = SpreadsheetApp.openByUrl(url);
@@ -122,5 +122,36 @@ function addEvent(userInfo){
   workSheet.appendRow([newID,userInfo.vname,userInfo.ename,userInfo.sdate,userInfo.eimage]);
   
 
+}
+
+function deleteEventById(recordInfo){
+  //var recordInfo = {id: 5};
+  var id = parseInt(recordInfo.id); //converting text ids to number ids
+  var spreadSheet = SpreadsheetApp.openByUrl(url); //get spreadsheet
+  var wsData = spreadSheet.getSheetByName("Data"); //get worksheet for guests
+  var guestData = wsData.getRange(2,1,wsData.getLastRow()-1,8).getValues(); //get array of guests
+  var wsEvent = spreadSheet.getSheetByName("Events"); //get event data
+  //intially this is what it looks like
+  //[ 1,stephen,rosso,god pass,organization, eventID] 
+  //[ 1,stephen,rosso,god pass,organization, eventID] r.concat adds extra column for index to existing array
+  var matchingEvents = guestData.map(function(r,i){ 
+     return r.concat([i]);
+  }).filter(function(r){ //filter the results and keep the records where eventID matches event ID
+    return r[7] === id;  // the index is on the last column.
+  });
+  var matchingGuestRows = matchingEvents.map(function(r){ //only return the information needed- the index
+     return r[8]+2; // add 2 becasue we have 1 line of static information
+  }); //[1,5,9] 
+  for (var i = matchingGuestRows.length -1; i>=0; i--){ //loop through the aray from bottom to top to find the matching guest. start with -1 to get to the last element
+          wsData.deleteRow(matchingGuestRows[i]); //delete the row number which is i inside  matchingGuestRows
+       }
+  Logger.log(matchingGuestRows);
+  
+ var ids = wsEvent.getRange(2, 1,wsEvent.getLastRow()-1,1).getValues().map(function(r){return r[0]}); //get the id of the event
+ 
+ var positionInArray =  ids.indexOf(id); //get the index position 
+ var rowNumber = positionInArray === -1 ? 0 : positionInArray +2; //again add 2 to index to get the row number
+  
+ wsEvent.deleteRow(rowNumber); // delete the row number
 }
 
