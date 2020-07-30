@@ -36,16 +36,16 @@
     <div id="app"></div>
     <!-- Content Here! -->
 
-     </div>
-    <!-- start Loading Spinner -->
-    <div id="loading" class="d-none">
-        <div class="d-flex justify-content-center">
-            <div class="spinner-border" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-        </div>
-    </div>
-    <!-- END Loading Spinner -->
+  </div>
+  <!-- start Loading Spinner -->
+
+  <div id="loading" class="d-flex justify-content-center align-items-center invisible">
+      <div class="spinner-grow" role="status">
+          <span class="sr-only">Loading...</span>
+      </div>
+  </div>
+
+  <!-- END Loading Spinner -->
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -91,54 +91,17 @@
     }
 
     function populateEvents() {
+      loadingStart();
       google.script.run.withSuccessHandler(generateEventCard).getEventTableData();
     }
 
     function populateEventDetails(e) {
       console.log(e);
+      loadingStart();
       google.script.run.withSuccessHandler(generateTable).getTableData(e);
       google.script.run.withSuccessHandler(generateTableTitle).getTableTitle(e);
 
     }
-
-
-
-    function showAddGuest() {
-
-      //var accessCode = prompt("Enter Access Code");
-      // if (accessCode === "939") {
-      document.getElementById("add-guest-container").classList.remove("d-none");
-      //   console.log(accessCode);
-      //  alert("You got it");
-      document.getElementById("seeAddGuest").classList.add("d-none");
-      //  } else {
-      //  alert("You got problems pal");
-      //  }
-    }
-
-    function showAddEvent() {
-      //var accessCode = prompt("Enter Access Code");
-      // if (accessCode === "939") {
-      document.getElementById("add-event-container").classList.remove("d-none");
-      //   console.log(accessCode);
-      //  alert("You got it");
-      document.getElementById("seeAddEvent").classList.add("d-none");
-      document.getElementById("all-cards-container").classList.add("d-none");
-      //  } else {
-      //  alert("You got problems pal");
-      //  }
-    }
-    
-    function hideAddEvent() {
-      document.getElementById("add-event-container").classList.add("d-none");
-      document.getElementById("seeAddEvent").classList.remove("d-none");
-      document.getElementById("all-cards-container").classList.remove("d-none");
-      document.getElementById("venueName").value = "";
-      document.getElementById("eventName").value = "";
-      document.getElementById("eventImage").value = "";
-      document.getElementById("startDate").value = "";
-    }
-
 
     //functions for click action events. ifthe target matches your class name run a function. if looking for an ID us # before the name
     function clickEventHandler(e) {
@@ -155,13 +118,13 @@
       } if (e.target.matches("#seeAddEvent")) {
 
         showAddEvent();
-      }if (e.target.matches("#cancelAddEvent")) {
+      } if (e.target.matches("#cancelAddEvent")) {
 
         hideAddEvent();
-      }     
+      }
 
       if (e.target.matches("#addEvent")) {
-        console.log("Shit-Pants");
+        console.log("add-Event");
         validateAddEvent();
       }
 
@@ -181,7 +144,7 @@
         recordInfo.id = e.target.dataset.recordId;
         recordInfo.checkInState = e.target.previousElementSibling.checked;
         console.log(recordInfo.checkInState);
-        document.getElementById("loading").classList.remove("d-none");
+        loadingStart();
         google.script.run.withSuccessHandler(function (newDate) {
           console.log(newDate);
           e.target.nextElementSibling.dataset.initialState = newDate[1] == "TRUE" ? true : false;
@@ -191,7 +154,7 @@
           timeStampColumn.textContent = newDate[0];
           e.target.classList.add("d-none");
           e.target.nextElementSibling.classList.add("d-none");
-          document.getElementById("loading").classList.add("d-none");
+          loadingEnd();
         }).updateRecordById(recordInfo);
       } //if we click save
     }
@@ -258,6 +221,7 @@
         row.appendChild(col6);
         row.appendChild(col7);
         tbody.appendChild(row);
+        loadingEnd();
       });
       //with this method the running of this function will never end :(
       //var eventButton = document.getElementById("btnAddMulti");
@@ -274,12 +238,15 @@
 
     function generateEventCard(dataArray) {
       console.log(dataArray);
+     //am I doing this right?
+        $('#card-group').empty();
 
 
       dataArray.forEach(function (r) {
 
         var cardHolder = document.createElement("div");
         cardHolder.classList.add("col-sm-3");
+        cardHolder.classList.add("mt-2");
         var cardLink = document.createElement("div");
         cardLink.classList.add("cardLinkClass");
         cardLink.dataset.recordId = r[0];
@@ -313,10 +280,9 @@
         card.appendChild(image);
         card.appendChild(cardbody);
         cardLink.appendChild(card);
-
-        console.log(card);
         cardHolder.appendChild(cardLink);
         document.getElementById("card-group").appendChild(cardHolder);
+        loadingEnd();
 
       });
 
@@ -426,13 +392,62 @@
       userInfo.sdate = document.getElementById("startDate").value;
       userInfo.eimage = document.getElementById("eventImage").value;
       //run the user click pass the array of data.
-      google.script.run.addEvent(userInfo);
-      //clear the fields
+      loadingStart();
+      google.script.run.withSuccessHandler(function(){
+        //clear the fields
+        document.getElementById("venueName").value = "";
+        document.getElementById("eventName").value = "";
+        document.getElementById("eventImage").value = "";
+        //$('#startDate').datepicker('setDate', null);
+        google.script.run.withSuccessHandler(generateEventCard).getEventTableData();
+        hideAddEvent();
+        loadingEnd();   
+      }).addEvent(userInfo);
+
+    }
+        function showAddGuest() {
+
+      //var accessCode = prompt("Enter Access Code");
+      // if (accessCode === "939") {
+      document.getElementById("add-guest-container").classList.remove("d-none");
+      //   console.log(accessCode);
+      //  alert("You got it");
+      document.getElementById("seeAddGuest").classList.add("d-none");
+      //  } else {
+      //  alert("You got problems pal");
+      //  }
+    }
+
+    function showAddEvent() {
+      //var accessCode = prompt("Enter Access Code");
+      // if (accessCode === "939") {
+      document.getElementById("add-event-container").classList.remove("d-none");
+      //   console.log(accessCode);
+      //  alert("You got it");
+      document.getElementById("seeAddEvent").classList.add("d-none");
+      document.getElementById("all-cards-container").classList.add("d-none");
+      //  } else {
+      //  alert("You got problems pal");
+      //  }
+    }
+
+    function hideAddEvent() {
+      document.getElementById("add-event-container").classList.add("d-none");
+      document.getElementById("seeAddEvent").classList.remove("d-none");
+      document.getElementById("all-cards-container").classList.remove("d-none");
       document.getElementById("venueName").value = "";
       document.getElementById("eventName").value = "";
       document.getElementById("eventImage").value = "";
-      //$('#startDate').datepicker('setDate', null);
+      document.getElementById("startDate").value = "";
     }
+
+    function loadingStart(){
+        document.getElementById("loading").classList.remove("invisible");
+      }
+      
+      function loadingEnd(){
+      document.getElementById("loading").classList.add("invisible");     
+      }
 
     //event listeners for the tabs. on click will call the respective load view
     document.getElementById("events-link").addEventListener("click", loadEventsView);
