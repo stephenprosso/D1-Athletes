@@ -36,9 +36,9 @@
     <form>
 
         <div class="row form-group">
-            <div class="col-sm-4 text-center">
+            <div class="col-sm-3 text-left">
 
-                <textarea id="multiName" name="multiName" rows="2" cols="30"
+                <textarea id="multiName" name="multiName" rows="2" cols="25"
                     placeholder="Add one or multiple guests. One guest per line. No commas. No middle names."
                     required></textarea>
                 <div class="invalid-feedback">
@@ -62,14 +62,15 @@
                 <div class="invalid-feedback">Select event</div>
             </div>
 
-            <div class="col-sm-1 text-right">
-                <button id="btnAddMulti" type="button" class="btn btn-success align-bottom" style="width: 75px; height: 60px;">Add Guests</button>
+            <div class="col-sm-2 text-center">
+                <!-- width: 75px; height: 60px; -->
+                <button id="btnAddMulti" type="button" class="btn btn-success align-bottom" style="background-color: olive;">Add Guests</button>
             </div>
-            <div class="col-sm-1 text-right">
-                <button id="btnCancelAddGuest" type="button" class="btn btn-warning align-bottom" style="width: 75px; height: 60px; color: white;">cancel</button>
+            <div class="col-sm-1 text-center">
+                <button id="btnCancelAddGuest" type="button" class="btn btn-warning align-bottom" style="color: white; background-color: darkgoldenrod;">cancel</button>
             </div>
-            <div class="col-sm-1 text-right">
-                <button id="btnDeleteEvent" type="button" class="btn btn-danger align-bottom classDeleteList" style="width: 75px; height: 60px;">Delete
+            <div class="col-sm-2 text-center">
+                <button id="btnDeleteEvent" type="button" class="btn btn-danger align-bottom classDeleteList" style="background-color: darkred;">Delete
                     Event</button>
             </div>
 
