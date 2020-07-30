@@ -11,7 +11,7 @@
                         <th>Racer Type</th>
                         <th>Organization</th>
                         <th>Time Checked In</th>
-                        <th>Check-in Athlete</th>
+                        <th>Check-in Guest</th>
                     </tr>
                 </thead>
                 <tbody id="table-body">
@@ -23,23 +23,23 @@
 </div>
 <!-- CLOSE CONTAINER -->
 
-<div>
-    <button id="seeAddGuest" type="button" class="btn btn-dark align-bottom">Add Guest</button>
+<div class="text-right">
+    <button id="seeAddGuest" type="button" class="btn btn-dark align-bottom">Edit Event</button>
 </div>
 <div id="add-guest-container" class="container d-none">
     <form>
 
         <div class="row form-group">
-            <div class="col-sm-4">
+            <div class="col-sm-4 text-center">
 
-                <textarea id="multiName" name="multiName" rows="2" cols="35"
+                <textarea id="multiName" name="multiName" rows="2" cols="30"
                     placeholder="Add one or multiple guests. One guest per line. No commas. No middle names."
                     required></textarea>
                 <div class="invalid-feedback">
                     Enter names
                 </div>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2 text-center">
                 <!--<label>Credential Type</label>-->
                 <select id="credType" class="form-control">
                     <option disabled selected>-Cred Type-</option>
@@ -50,16 +50,20 @@
                 </select>
                 <div class="invalid-feedback">Select a Cred Type</div>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2 text-center">
                 <!--<label for="organization">Last Name</label>-->
                 <input id="organization" type="text" class="form-control validate" placeholder="Organization" value="">
                 <div class="invalid-feedback">Select event</div>
             </div>
             <!--END col-->
 
-            <div class="col-sm-2">
+            <div class="col-sm-2 text-center">
                 <!--<label>Add Guest</label> -->
                 <button id="btnAddMulti" type="button" class="btn btn-dark align-bottom">Add Guests</button>
+            </div>
+            <div class="col-sm-2 text-center">
+                <!--<label>Add Guest</label> -->
+                <button id="btnDeleteEvent" type="button" class="btn btn-danger align-bottom classDeleteList">Delete Event</button>
             </div>
             <!-- Diong it like below get the eID from the javascript, getting it from the server, and setting in html, to give back to the javascript
                      to give it back to the server -->

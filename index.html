@@ -77,9 +77,6 @@
       loadView({ func: "loadSearchView" });
     }
 
-    function loadAddAthleteView() {
-      loadView({ func: "loadAddAthleteView" });
-    }
 
     function loadEventsView() {
       loadView({ func: "loadEventsView", callback: populateEvents });
@@ -103,33 +100,39 @@
 
     }
 
-    //functions for click action events. ifthe target matches your class name run a function. if looking for an ID us # before the name
+    //functions for click action events. ifthe target matches your class name run a function. if looking for an ID use # before the name
     function clickEventHandler(e) {
-      //console.log(e);        
+       
       if (e.target.classList.contains("card-body")) {
-        console.log(e);
+   
         loadEventDetailsView(e);
+        
       } if (e.target.matches("#btnAddMulti")) {
+      
         btnclickAddMultiValidate();
-
+        
       } if (e.target.matches("#seeAddGuest")) {
-
+      
         showAddGuest();
+        
       } if (e.target.matches("#seeAddEvent")) {
-
+      
         showAddEvent();
+        
       } if (e.target.matches("#cancelAddEvent")) {
 
         hideAddEvent();
       }
 
       if (e.target.matches("#addEvent")) {
-        console.log("add-Event");
+      
         validateAddEvent();
-      }
-
-
-      if (e.target.classList.contains("cb")) {
+        
+      } if (e.target.classList.contains("classDeleteList")){
+      
+        console.log("deleteEvent");
+      
+      } if (e.target.classList.contains("cb")) {
         e.target.nextElementSibling.classList.remove("d-none");
         e.target.nextElementSibling.nextElementSibling.classList.remove("d-none");
       }
@@ -165,6 +168,8 @@
     function generateTable(dataArray) {
       var tbody = document.getElementById("table-body");
       //$('#table-body').empty();
+      
+      //need to add an if statement to call showAddGuest(); if not rows 
       dataArray.forEach(function (r) {
         var butt = document.getElementById("btnAddMulti");
         butt.dataset.recordId = r[7];
@@ -404,6 +409,47 @@
         loadingEnd();   
       }).addEvent(userInfo);
 
+    }
+    
+    function deleteEvent(){
+    
+       
+        
+        
+        
+  
+                  var confirmation = confirm("This will delete the event and all of the event guest data. Are you sure you want to delete everything?");
+                        if (confirmation === true) {
+                        
+                        //if they click save we will save the data in an empty object
+                        //create empty object recordInfo
+                        var recordInfo = {};
+                        //add an ID to the empty recordInfo Object. this is = to the recordID in the dataSet,of the target that was clicked on. 
+                        //the recrodID is et below when the table is populated
+                        recordInfo.id = e.target.dataset.recordId;
+                     
+                        //show the loading div 
+                        //document.getElementById("loading").classList.remove("d-none");
+                        //the below googe script function calls a function in your GS page. on success it will call the function in the call back.
+                        document.getElementById("loading").classList.remove("d-none");
+                        google.script.run.withSuccessHandler(function() {
+                           e.target.closest(".classRow").remove();
+                           //make sure you add this in the HTML
+                      document.getElementById("loading").classList.add("d-none");
+
+            }).deleteEventById(recordInfo);
+            
+                        } else {
+                          return false;
+                        }
+                       
+          
+            
+        
+
+    
+    
+    
     }
         function showAddGuest() {
 
