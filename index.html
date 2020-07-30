@@ -19,19 +19,19 @@
 
 <body>
   <div class="container">
-    <nav id="navigation">
+    <!--<nav id="navigation">
       <ul class="nav justify-content-center main-nav nav-menu">
-        <!-- <li class="nav-item nav-menu_link">
+        <li class="nav-item nav-menu_link">
           <div class="nav-link active" id="search-link">Search</div>
         </li>
         <li class="nav-item nav-menu_link">
           <div class="nav-link" id="add-athlete-link">Add Athlete</div>
-        </li> -->
+        </li> 
         <li class="nav-item nav-menu_link">
           <div class="nav-link" id="events-link">Events</div>
-        </li>
+        </li> 
       </ul>
-    </nav>
+    </nav>-->
 
     <div id="app"></div>
     <!-- Content Here! -->
@@ -110,6 +110,10 @@
 
         btnclickAddMultiValidate();
 
+      } if (e.target.matches("#events-link")) {
+
+        loadEventsView();
+
       } if (e.target.matches("#seeAddGuest")) {
 
         showAddGuest();
@@ -121,6 +125,10 @@
       } if (e.target.matches("#cancelAddEvent")) {
 
         hideAddEvent();
+        
+      } if (e.target.matches("#btnCancelAddGuest")) {
+
+        hideAddGuest();
       }
 
       if (e.target.matches("#addEvent")) {
@@ -321,7 +329,6 @@
     function btnclickAddMultiValidate() {
       var toValidate = {
         credType: "Cred Type Required",
-        eventList: "Select Event Required",
         multiName: "Names Required"
       };
       var idKeys = Object.keys(toValidate);
@@ -379,15 +386,15 @@
         data.push([combinedName[0], combinedName[1], ctype, org, checkinDate, checkBox, eventID]);
       });
       console.log(data);
-      //document.getElementById("loading").classList.remove("d-none");
+
       google.script.run.addMultiNames(data);
       document.getElementById("multiName").value = "";
       document.getElementById("organization").value = "";
-      //create cred type as a varialbe
+ 
       var credTypeSelect = document.getElementById("credType");
-      //set selected index to 0 after data submitted
+
       credTypeSelect.selectedIndex = 0;
-      //document.getElementById("loading").classList.add("d-none");
+
     }
 
     function addEvent() {
@@ -415,13 +422,13 @@
 
       var confirmation = confirm("This will delete the event and all of the event guest data. Are you sure you want to delete everything?");
       if (confirmation === true) {
-      
+
         var recordInfo = {};
         recordInfo.id = e.target.dataset.recordId;
         loadingStart();
-        
+
         google.script.run.withSuccessHandler(function () {
-          loadEventsView();     
+          loadEventsView();
 
         }).deleteEventById(recordInfo);
 
@@ -429,7 +436,7 @@
         return false;
       }
     }
-    
+
     function showAddGuest() {
 
       //var accessCode = prompt("Enter Access Code");
@@ -438,10 +445,20 @@
       //   console.log(accessCode);
       //  alert("You got it");
       document.getElementById("seeAddGuest").classList.add("d-none");
+       document.getElementById("events-link").classList.add("d-none");
+
       //  } else {
       //  alert("You got problems pal");
       //  }
     }
+    function hideAddGuest() {
+
+      document.getElementById("events-link").classList.remove("d-none");
+      document.getElementById("seeAddGuest").classList.remove("d-none");
+      document.getElementById("add-guest-container").classList.add("d-none");
+
+    }
+
 
     function showAddEvent() {
       //var accessCode = prompt("Enter Access Code");
@@ -475,7 +492,7 @@
     }
 
     //event listeners for the tabs. on click will call the respective load view
-    document.getElementById("events-link").addEventListener("click", loadEventsView);
+    //document.getElementById("events-link").addEventListener("click", loadEventsView);
     //document.getElementById("search-link").addEventListener("click", loadSearchView);
     //document.getElementById("add-athlete-link").addEventListener("click", loadAddAthleteView);
 

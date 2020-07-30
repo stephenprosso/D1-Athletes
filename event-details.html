@@ -22,10 +22,16 @@
     <!-- CLOSE ROW -->
 </div>
 <!-- CLOSE CONTAINER -->
-
-<div class="text-right">
-    <button id="seeAddGuest" type="button" class="btn btn-dark align-bottom">Edit Event</button>
+<div class="row text-center">
+    <div class="col-sm-1">
+        <button id="events-link" type="button" class="align-bottom btn btn-dark">Events</button>
+    </div>
+    <div class="col-sm-9"></div>
+    <div class="col-sm-2 text-right">
+        <button id="seeAddGuest" type="button" class="btn btn-dark align-bottom">Edit Event</button>
+    </div>
 </div>
+
 <div id="add-guest-container" class="container d-none">
     <form>
 
@@ -55,19 +61,17 @@
                 <input id="organization" type="text" class="form-control validate" placeholder="Organization" value="">
                 <div class="invalid-feedback">Select event</div>
             </div>
-            <!--END col-->
 
-            <div class="col-sm-2 text-center">
-                <!--<label>Add Guest</label> -->
-                <button id="btnAddMulti" type="button" class="btn btn-dark align-bottom">Add Guests</button>
+            <div class="col-sm-1 text-right">
+                <button id="btnAddMulti" type="button" class="btn btn-success align-bottom" style="width: 75px; height: 60px;">Add Guests</button>
             </div>
-            <div class="col-sm-2 text-center">
-                <!--<label>Add Guest</label> -->
-                <button id="btnDeleteEvent" type="button" class="btn btn-danger align-bottom classDeleteList">Delete Event</button>
+            <div class="col-sm-1 text-right">
+                <button id="btnCancelAddGuest" type="button" class="btn btn-warning align-bottom" style="width: 75px; height: 60px; color: white;">cancel</button>
             </div>
-            <!-- Diong it like below get the eID from the javascript, getting it from the server, and setting in html, to give back to the javascript
-                     to give it back to the server -->
-            <input id="eventList" type="hidden" class="form-control validate" value="" readonly>
+            <div class="col-sm-1 text-right">
+                <button id="btnDeleteEvent" type="button" class="btn btn-danger align-bottom classDeleteList" style="width: 75px; height: 60px;">Delete
+                    Event</button>
+            </div>
 
         </div>
         <!-- END ROW -->
