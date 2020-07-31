@@ -81,12 +81,12 @@ function updateRecordById(recordInfo) {
 function loadOptions() {
 
   var spreadSheet = SpreadsheetApp.openByUrl(url);
-  var workSheet = spreadSheet.getSheetByName("Options");
-  var list = workSheet.getRange(1, 1, workSheet.getRange("A1").getDataRegion().getLastRow(), 1).getValues();
-  var options = list.map(r => '<option>' + r[0] + '</option>').join('');
-  Logger.log(options);
+  var workSheet = spreadSheet.getSheetByName("CredType");
+  //this is the array i get back from the spreadsheet
+  return workSheet.getRange(1, 1, workSheet.getRange("A1").getDataRegion().getLastRow(), 1).getValues();
+  //var options = list.map(r => '<option>' + r[0] + '</option>').join('');
+  //Logger.log(options);
 
-  return { list: options }
 
 }
 

@@ -58,6 +58,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
     integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
     crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous"></script>
 
   <script>
     var data;
@@ -88,16 +89,38 @@
 
     function populateEvents() {
       loadingStart();
+      $('#startDate').datepicker('setDate', null);
       google.script.run.withSuccessHandler(generateEventCard).getEventTableData();
     }
 
     function populateEventDetails(e) {
-      console.log(e);
-      loadingStart();
+      console.log(e.eventID);
+      //loadingStart();
+      var butt = document.getElementById("btnAddMulti");
+        butt.dataset.recordId = e.eventID;
+        var buttDelete = document.getElementById("btnDeleteEvent");
+        buttDelete.dataset.recordId = e.eventID;
       google.script.run.withSuccessHandler(generateTable).getTableData(e);
       google.script.run.withSuccessHandler(generateTableTitle).getTableTitle(e);
+      google.script.run.withSuccessHandler(function(data){
+        var selectElement = document.getElementById("credType");
+        selectElement.innerHTML = '';
+        var disableOption = document.createElement("option");
+        disableOption.textContent = "Cred-Type";
+        disableOption.disabled = true;
+        disableOption.selected = true;
+        selectElement.appendChild(disableOption);
+        data.forEach(function(r){
+          var option = document.createElement("option");
+          option.textContent = r[0];
+          selectElement.appendChild(option);
+        
+        })
+      
+      }).loadOptions();
 
     }
+    
 
     //functions for click action events. ifthe target matches your class name run a function. if looking for an ID use # before the name
     function clickEventHandler(e) {
@@ -153,14 +176,14 @@
         var recordInfo = {};
         recordInfo.id = e.target.dataset.recordId;
         recordInfo.checkInState = e.target.previousElementSibling.checked;
-        console.log(recordInfo.checkInState);
+        //console.log(recordInfo.checkInState);
         loadingStart();
         google.script.run.withSuccessHandler(function (newDate) {
-          console.log(newDate);
+          //console.log(newDate);
           e.target.nextElementSibling.dataset.initialState = newDate[1] == "TRUE" ? true : false;
-          console.log(e.target.nextElementSibling.dataset.initialState);
+ 
           var timeStampColumn = e.target.closest(".checkBoxButtons").previousElementSibling;
-          console.log(timeStampColumn);
+          //console.log(timeStampColumn);
           timeStampColumn.textContent = newDate[0];
           e.target.classList.add("d-none");
           e.target.nextElementSibling.classList.add("d-none");
@@ -173,15 +196,12 @@
     document.addEventListener("DOMContentLoaded", loadEventsView);
 
     function generateTable(dataArray) {
+      $('#table-body').empty();
       var tbody = document.getElementById("table-body");
-      //$('#table-body').empty();
+      
 
       //need to add an if statement to call showAddGuest(); if not rows 
       dataArray.forEach(function (r) {
-        var butt = document.getElementById("btnAddMulti");
-        butt.dataset.recordId = r[7];
-        var buttDelete = document.getElementById("btnDeleteEvent");
-        buttDelete.dataset.recordId = r[7];
 
         var row = document.createElement("tr");
         //var col1 = document.createElement("td");
@@ -245,13 +265,13 @@
     }
 
     function generateTableTitle(title) {
-      console.log(title);
+      //console.log(title);
       document.getElementById("title").innerHTML = title;
 
     }
 
     function generateEventCard(dataArray) {
-      console.log(dataArray);
+      //console.log(dataArray);
       //am I doing this right?
       $('#card-group').empty();
 
@@ -259,7 +279,7 @@
       dataArray.forEach(function (r) {
 
         var cardHolder = document.createElement("div");
-        cardHolder.classList.add("col-sm-3");
+        cardHolder.classList.add("col-sm-4");
         cardHolder.classList.add("mt-2");
         var cardLink = document.createElement("div");
         cardLink.classList.add("cardLinkClass");
@@ -385,15 +405,18 @@
         var combinedName = n.split(" ");
         data.push([combinedName[0], combinedName[1], ctype, org, checkinDate, checkBox, eventID]);
       });
-      console.log(data);
-
-      google.script.run.addMultiNames(data);
-      document.getElementById("multiName").value = "";
-      document.getElementById("organization").value = "";
- 
-      var credTypeSelect = document.getElementById("credType");
-
-      credTypeSelect.selectedIndex = 0;
+      //console.log(data);
+        loadingStart();
+      google.script.run.withSuccessHandler(function(){
+      
+          document.getElementById("multiName").value = "";
+          document.getElementById("organization").value = "";
+          var credTypeSelect = document.getElementById("credType");
+          credTypeSelect.selectedIndex = 0;
+      
+       google.script.run.withSuccessHandler(generateTable).getTableData({eventID: eventID});
+      
+      }).addMultiNames(data);
 
     }
 

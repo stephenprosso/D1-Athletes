@@ -8,7 +8,7 @@ function include(filename, params) {
 }
 
 //THIS FUNCTION RENDERS THE CORRECT ROUTE AKA PAGE TP YOUR SCREEN
-function render(file, argsObject) {
+/*function render(file, argsObject) {
 
   var tmp = HtmlService.createTemplateFromFile(file);
   if (argsObject) {
@@ -21,7 +21,7 @@ function render(file, argsObject) {
   }//END IF
   return tmp.evaluate();
  
-}
+}*/
 
 
 //YOU WANT TO LOAD PARTIALS DONT YOU??
