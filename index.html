@@ -171,13 +171,11 @@
 
         deleteGuest(e);
 
-      } 
-      
-      if (e.target.classList.contains("classDeleteList")) {
+      }  if (e.target.classList.contains("classDeleteList")) {
 
         deleteEvent(e);
 
-      } if (e.target.classList.contains("cb")) {
+      } if (e.target.matches(".cb")) {
         e.target.nextElementSibling.classList.remove("d-none");
         e.target.nextElementSibling.nextElementSibling.classList.remove("d-none");
       }
@@ -259,7 +257,7 @@ function deleteGuest(e){
         icon.classList.add("material-icons");
         icon.classList.add("deleteGuest");
         icon.dataset.recordId = r[0];
-        icon.textContent = "face";
+        icon.textContent = "delete_forever";
         col8.appendChild(icon);
         
         var saveButton = document.createElement("button");

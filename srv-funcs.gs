@@ -50,21 +50,6 @@ function getTableInfo(e){
   
 }
 
-/*function reGetTableData(eventID) {
-  var ss = SpreadsheetApp.openByUrl(url);
-  var ws = ss.getSheetByName("Data");
-  var data = ws.getRange(2, 1, ws.getLastRow() - 1, 8).getDisplayValues();
-  //Logger.log(data);
-  data = data.filter(function (r) {
-    return r[7] == eventID;
-  });
-  Logger.log("data : " + data);
-  return data;
-
-}*/
-
-
-
 //**** EVENT DETAILS JS FUNCTION ****//
 function getTableTitle(e) {
   var ss = SpreadsheetApp.openByUrl(url);
@@ -110,11 +95,7 @@ function loadOptions() {
 
   var spreadSheet = SpreadsheetApp.openByUrl(url);
   var workSheet = spreadSheet.getSheetByName("CredType");
-  //this is the array i get back from the spreadsheet
   return workSheet.getRange(1, 1, workSheet.getRange("A1").getDataRegion().getLastRow(), 1).getValues();
-  //var options = list.map(r => '<option>' + r[0] + '</option>').join('');
-  //Logger.log(options);
-
 
 }
 
