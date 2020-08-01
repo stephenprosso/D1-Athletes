@@ -22,6 +22,34 @@ function getTableData(e) {
 
 }
 
+function getTableInfo(e){
+  
+  var ss = SpreadsheetApp.openByUrl(url);
+  var ws = ss.getSheetByName("Events");
+  var data = ws.getRange(2, 1, ws.getLastRow() - 1, 4).getValues();
+
+   var gridTitleArray = data.filter(r => r[0] == e.eventID ).map(function (r) {
+    var dateText = r[3].toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    var displayDateArray = dateText.split(' ');
+    //Logger.log(displayDateArray);
+    var displayDate = displayDateArray[0] + ' ' + displayDateArray[1] + ' ' + displayDateArray[2];
+    return r[2] + " @ " + r[1] + " - " + displayDate;
+
+  });
+
+
+  var wsdata = ss.getSheetByName("Data");
+  var guests = wsdata.getRange(2, 1, wsdata.getLastRow() - 1, 8).getDisplayValues();
+  //Logger.log(data);
+  guests = guests.filter(function (r) {
+    return r[7] == e.eventID;
+  });
+
+  return {title: gridTitleArray, guests: guests};
+  
+  
+}
+
 /*function reGetTableData(eventID) {
   var ss = SpreadsheetApp.openByUrl(url);
   var ws = ss.getSheetByName("Data");
@@ -153,5 +181,17 @@ function deleteEventById(recordInfo){
  var rowNumber = positionInArray === -1 ? 0 : positionInArray +2; //again add 2 to index to get the row number
   
  wsEvent.deleteRow(rowNumber); // delete the row number
+}
+
+function deleteRecordById(recordInfo){
+Logger.log(recordInfo);
+ var spreadSheet = SpreadsheetApp.openByUrl(url);
+ var workSheet = spreadSheet.getSheetByName("Data");
+ var ids = workSheet.getRange(2, 1,workSheet.getLastRow()-1,1).getValues().map(function(r){return r[0]});
+ 
+ var positionInArray =  ids.indexOf(parseInt(recordInfo.id));
+ var rowNumber = positionInArray === -1 ? 0 : positionInArray +2;
+  
+  workSheet.deleteRow(rowNumber);
 }
 

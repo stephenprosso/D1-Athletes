@@ -100,8 +100,15 @@
         butt.dataset.recordId = e.eventID;
         var buttDelete = document.getElementById("btnDeleteEvent");
         buttDelete.dataset.recordId = e.eventID;
-      google.script.run.withSuccessHandler(generateTable).getTableData(e);
-      google.script.run.withSuccessHandler(generateTableTitle).getTableTitle(e);
+        console.log(e);
+      google.script.run.withSuccessHandler(function(data){
+      console.log(data);
+          generateTableTitle(data.title);
+          generateTable(data.guests);
+            
+      
+      }).getTableInfo(e);
+      //google.script.run.withSuccessHandler(generateTableTitle).getTableTitle(e);
       google.script.run.withSuccessHandler(function(data){
         var selectElement = document.getElementById("credType");
         selectElement.innerHTML = '';
@@ -124,8 +131,10 @@
 
     //functions for click action events. ifthe target matches your class name run a function. if looking for an ID use # before the name
     function clickEventHandler(e) {
-
-      if (e.target.classList.contains("card-body")) {
+        e.preventDefault();
+        console.log(e);
+      if (e.target.matches(".cardLinkClass")) {
+        console.log("Clicked it!");
 
         loadEventDetailsView(e);
 
@@ -158,7 +167,13 @@
 
         validateAddEvent();
 
-      } if (e.target.classList.contains("classDeleteList")) {
+      } if (e.target.matches(".deleteGuest")) {
+
+        deleteGuest(e);
+
+      } 
+      
+      if (e.target.classList.contains("classDeleteList")) {
 
         deleteEvent(e);
 
@@ -195,6 +210,17 @@
     document.getElementById("app").addEventListener("click", clickEventHandler);
     document.addEventListener("DOMContentLoaded", loadEventsView);
 
+function deleteGuest(e){
+    loadingStart();
+    google.script.run.withSuccessHandler(function(){
+    
+       e.target.closest(".classRow").remove();
+    loadingEnd();
+  }).deleteRecordById({id: e.target.dataset.recordId});
+
+
+}
+
     function generateTable(dataArray) {
       $('#table-body').empty();
       var tbody = document.getElementById("table-body");
@@ -204,6 +230,7 @@
       dataArray.forEach(function (r) {
 
         var row = document.createElement("tr");
+        row.classList.add("classRow");
         //var col1 = document.createElement("td");
         //col1.textContent = r[0];
         var col2 = document.createElement("td");
@@ -227,6 +254,14 @@
         checkBox.classList.add("cb");
         checkBox.checked = r[6] == "TRUE" ? true : false;
         col7.appendChild(checkBox);
+        var col8 = document.createElement("td");
+        var icon = document.createElement("i");
+        icon.classList.add("material-icons");
+        icon.classList.add("deleteGuest");
+        icon.dataset.recordId = r[0];
+        icon.textContent = "face";
+        col8.appendChild(icon);
+        
         var saveButton = document.createElement("button");
         saveButton.textContent = "Save";
         saveButton.classList.add("classSave");
@@ -254,6 +289,7 @@
         row.appendChild(col5);
         row.appendChild(col6);
         row.appendChild(col7);
+        row.appendChild(col8);
         tbody.appendChild(row);
         loadingEnd();
       });
@@ -281,9 +317,15 @@
         var cardHolder = document.createElement("div");
         cardHolder.classList.add("col-sm-4");
         cardHolder.classList.add("mt-2");
+         cardHolder.classList.add("cardHolder");
+         
         var cardLink = document.createElement("div");
-        cardLink.classList.add("cardLinkClass");
         cardLink.dataset.recordId = r[0];
+        cardLink.classList.add("cardLink");
+        
+        var cardOverlay = document.createElement("div");
+        cardOverlay.classList.add("cardLinkClass");
+        cardOverlay.dataset.recordId = r[0];
 
         var card = document.createElement("div");
         card.classList.add("card");
@@ -314,7 +356,9 @@
         card.appendChild(image);
         card.appendChild(cardbody);
         cardLink.appendChild(card);
+        cardHolder.appendChild(cardOverlay);
         cardHolder.appendChild(cardLink);
+    
         document.getElementById("card-group").appendChild(cardHolder);
         loadingEnd();
 
@@ -324,18 +368,11 @@
 
     function validateAddEvent() {
 
-      var toValidate = {
-        venueName: "First Name Required",
-        eventName: "Last Name Required",
-        startDate: "Cred Type Required"
-
-      };
-
-      var idKeys = Object.keys(toValidate);
+      var idKeys = ["venueName","eventName", "startDate"];
 
       var allValid = true;
       idKeys.forEach(function (id) {
-        var isValid = checkIfValid(id, toValidate[id]);
+        var isValid = checkIfValid(id);
         if (!isValid) {
 
           allValid = false;
@@ -347,14 +384,11 @@
     } //close function btnclick
 
     function btnclickAddMultiValidate() {
-      var toValidate = {
-        credType: "Cred Type Required",
-        multiName: "Names Required"
-      };
-      var idKeys = Object.keys(toValidate);
+
+      var idKeys = ["credType","multiName"];
       var allValid = true;
       idKeys.forEach(function (id) {
-        var isValid = checkIfValid(id, toValidate[id]);
+        var isValid = checkIfValid(id);
         if (!isValid) {
           allValid = false;
         }
@@ -364,7 +398,7 @@
       }
     } //close function btnclick
     //.is-invalid and .is-valid  
-    function checkIfValid(elID, message) {
+    function checkIfValid(elID) {
       var elToValidate = document.getElementById(elID);
       var isValid = false;
       console.log("Start validating");

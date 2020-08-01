@@ -42,11 +42,32 @@ nav {
     cursor: pointer;
 }
 .cardLinkClass:hover,.cardLinkClass .card:hover {
-  
+   
+   cursor: pointer;
    text-decoration: none;
    color: black;
-   background-color: #d3d3d3;
+  
 }
+.cardLinkClass:hover + .cardLink .card-body {
+  background-color: lightgray;
+}
+.cardLinkClass {
+  position: absolute;
+   z-index: 50;
+   height: 100%;
+   width: 100%;
+   top:0;
+   left: 0;
+
+}
+.cardHolder{
+  position: relative;
+}
+.deleteGuest:hover{
+  cursor: pointer;
+
+}
+
 #loading {
  position: fixed;
  top: 0;

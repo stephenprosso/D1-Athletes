@@ -2,6 +2,6 @@ var url ="https://docs.google.com/spreadsheets/d/1jhtlaNRYdGdr0dRVzMM1xlV_9YD4Db
 
 function doGet(e) {
 
-   return HtmlService.createTemplateFromFile("index").evaluate();
+   return HtmlService.createTemplateFromFile("index").evaluate().setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
   
 }
