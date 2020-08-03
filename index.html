@@ -291,11 +291,6 @@ function deleteGuest(e){
         tbody.appendChild(row);
         loadingEnd();
       });
-      //with this method the running of this function will never end :(
-      //var eventButton = document.getElementById("btnAddMulti");
-      //var eventID = eventButton.getAttribute("data-record-Id");
-      //google.script.run.withSuccessHandler(generateTable).reGetTableData(eventID);
-
     }
 
     function generateTableTitle(title) {
@@ -305,10 +300,7 @@ function deleteGuest(e){
     }
 
     function generateEventCard(dataArray) {
-      //console.log(dataArray);
-      //am I doing this right?
       $('#card-group').empty();
-
 
       dataArray.forEach(function (r) {
 
@@ -328,6 +320,7 @@ function deleteGuest(e){
         var card = document.createElement("div");
         card.classList.add("card");
         card.classList.add("cardStyle");
+        
         var image = document.createElement("img");
         image.classList.add("card-img-top");
         image.classList.add("photo-size");
@@ -462,7 +455,6 @@ function deleteGuest(e){
       //run the user click pass the array of data.
       loadingStart();
       google.script.run.withSuccessHandler(function () {
-        //clear the fields
         document.getElementById("venueName").value = "";
         document.getElementById("eventName").value = "";
         document.getElementById("eventImage").value = "";
@@ -493,28 +485,15 @@ function deleteGuest(e){
     }
 
     function showAddGuest() {
-
-      //var accessCode = prompt("Enter Access Code");
-      // if (accessCode === "939") {
       document.getElementById("add-guest-container").classList.remove("d-none");
-      //   console.log(accessCode);
-      //  alert("You got it");
       document.getElementById("seeAddGuest").classList.add("d-none");
        document.getElementById("events-link").classList.add("d-none");
-
-      //  } else {
-      //  alert("You got problems pal");
-      //  }
     }
     function hideAddGuest() {
-
       document.getElementById("events-link").classList.remove("d-none");
       document.getElementById("seeAddGuest").classList.remove("d-none");
       document.getElementById("add-guest-container").classList.add("d-none");
-
     }
-
-
     function showAddEvent() {
       //var accessCode = prompt("Enter Access Code");
       // if (accessCode === "939") {
@@ -546,10 +525,6 @@ function deleteGuest(e){
       document.getElementById("loading").classList.add("invisible");
     }
 
-    //event listeners for the tabs. on click will call the respective load view
-    //document.getElementById("events-link").addEventListener("click", loadEventsView);
-    //document.getElementById("search-link").addEventListener("click", loadSearchView);
-    //document.getElementById("add-athlete-link").addEventListener("click", loadAddAthleteView);
 
   </script>
 </body>
