@@ -94,7 +94,7 @@
     }
 
     function populateEventDetails(e) {
-      console.log(e.eventID);
+    /*  console.log(e.eventID);
       //loadingStart();
       var butt = document.getElementById("btnAddMulti");
         butt.dataset.recordId = e.eventID;
@@ -107,9 +107,12 @@
           generateTable(data.guests);
             
       
-      }).getTableInfo(e);
-      //google.script.run.withSuccessHandler(generateTableTitle).getTableTitle(e);
-      google.script.run.withSuccessHandler(function(data){
+      }).getTableInfo(e); */
+      
+      google.script.run.withSuccessHandler(generateTableTitle).getTableTitle(e);
+      google.script.run.withSuccessHandler(generateTable).getTableTitle(e);
+   
+   google.script.run.withSuccessHandler(function(data){
         var selectElement = document.getElementById("credType");
         selectElement.innerHTML = '';
         var disableOption = document.createElement("option");
@@ -127,8 +130,7 @@
       }).loadOptions();
 
     }
-    
-
+  
     //functions for click action events. ifthe target matches your class name run a function. if looking for an ID use # before the name
     function clickEventHandler(e) {
         e.preventDefault();
