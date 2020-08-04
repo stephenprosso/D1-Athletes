@@ -94,7 +94,7 @@
     }
 
     function populateEventDetails(e) {
-    /*  console.log(e.eventID);
+    console.log(e.eventID);
       //loadingStart();
       var butt = document.getElementById("btnAddMulti");
         butt.dataset.recordId = e.eventID;
@@ -107,10 +107,10 @@
           generateTable(data.guests);
             
       
-      }).getTableInfo(e); */
+      }).getTableInfo(e); 
       
-      google.script.run.withSuccessHandler(generateTableTitle).getTableTitle(e);
-      google.script.run.withSuccessHandler(generateTable).getTableTitle(e);
+      //google.script.run.withSuccessHandler(generateTableTitle).getTableTitle(e);
+      //google.script.run.withSuccessHandler(generateTable).getTableTitle(e);
    
    google.script.run.withSuccessHandler(function(data){
         var selectElement = document.getElementById("credType");
@@ -230,7 +230,7 @@ function deleteGuest(e){
       dataArray.forEach(function (r) {
 
         var row = document.createElement("tr");
-        row.classList.add("classRow");
+        //row.classList.add("classRow");
         //var col1 = document.createElement("td");
         //col1.textContent = r[0];
         var col2 = document.createElement("td");
@@ -248,6 +248,8 @@ function deleteGuest(e){
         var col7 = document.createElement("td");
         col7.classList.add("checkBoxButtons");
         var checkBox = document.createElement("input");
+        var cb1 = document.createElement("input");
+        cb1.type = "checkbox";
         checkBox.type = "checkbox";
         checkBox.value = r[6];
         checkBox.dataset.recordId = r[0];
@@ -261,6 +263,7 @@ function deleteGuest(e){
         icon.dataset.recordId = r[0];
         icon.textContent = "delete_forever";
         col8.appendChild(icon);
+        col8.appendChild(cb1);
         
         var saveButton = document.createElement("button");
         saveButton.textContent = "Save";
