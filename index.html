@@ -7,11 +7,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-  <link rel="stylesheet"
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" />  
+    <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.standalone.min.css"
-    integrity="sha256-jO7D3fIsAq+jB8Xt3NI5vBf3k4tvtHwzp8ISLQG4UWU=" crossorigin="anonymous" />
+    integrity="sha256-jO7D3fIsAq+jB8Xt3NI5vBf3k4tvtHwzp8ISLQG4UWU=" crossorigin="anonymous" /> 
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <?!= include("index-css"); ?>
@@ -49,17 +48,10 @@
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-    crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
-    crossorigin="anonymous"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous"></script>
-
+ <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous"></script>
   <script>
     var data;
     function loadView(options) {
@@ -89,11 +81,12 @@
 
     function populateEvents() {
       loadingStart();
-      $('#startDate').datepicker('setDate', null);
+     // $('#startDate').datepicker('setDate', null);
       google.script.run.withSuccessHandler(generateEventCard).getEventTableData();
     }
 
     function populateEventDetails(e) {
+    loadingStart();
     console.log(e.eventID);
       //loadingStart();
       var butt = document.getElementById("btnAddMulti");
@@ -178,10 +171,12 @@
         deleteEvent(e);
 
       } if (e.target.matches(".cb")) {
+      console.log(e.target);
         e.target.nextElementSibling.classList.remove("d-none");
         e.target.nextElementSibling.nextElementSibling.classList.remove("d-none");
       }
       if (e.target.classList.contains("classCancel")) {
+      console.log("cancel clicked!");
         e.target.previousElementSibling.previousElementSibling.checked = e.target.dataset.initialState == "true" ? true : false;
         e.target.classList.add("d-none");
         e.target.previousElementSibling.classList.add("d-none");
@@ -191,11 +186,13 @@
         var recordInfo = {};
         recordInfo.id = e.target.dataset.recordId;
         recordInfo.checkInState = e.target.previousElementSibling.checked;
+        
         //console.log(recordInfo.checkInState);
         loadingStart();
         google.script.run.withSuccessHandler(function (newDate) {
           //console.log(newDate);
           e.target.nextElementSibling.dataset.initialState = newDate[1] == "TRUE" ? true : false;
+          console.log("save clicked!");
  
           var timeStampColumn = e.target.closest(".checkBoxButtons").previousElementSibling;
           //console.log(timeStampColumn);
@@ -210,16 +207,6 @@
     document.getElementById("app").addEventListener("click", clickEventHandler);
     document.addEventListener("DOMContentLoaded", loadEventsView);
 
-function deleteGuest(e){
-    loadingStart();
-    google.script.run.withSuccessHandler(function(){
-    
-       e.target.closest(".classRow").remove();
-    loadingEnd();
-  }).deleteRecordById({id: e.target.dataset.recordId});
-
-
-}
 
     function generateTable(dataArray) {
       $('#table-body').empty();
@@ -230,7 +217,7 @@ function deleteGuest(e){
       dataArray.forEach(function (r) {
 
         var row = document.createElement("tr");
-        //row.classList.add("classRow");
+        row.classList.add("classRow");
         //var col1 = document.createElement("td");
         //col1.textContent = r[0];
         var col2 = document.createElement("td");
@@ -248,13 +235,13 @@ function deleteGuest(e){
         var col7 = document.createElement("td");
         col7.classList.add("checkBoxButtons");
         var checkBox = document.createElement("input");
-        var cb1 = document.createElement("input");
-        cb1.type = "checkbox";
+        //var cb1 = document.createElement("input");
+        //cb1.type = "checkbox";
         checkBox.type = "checkbox";
-        checkBox.value = r[6];
+        //checkBox.value = r[6];
         checkBox.dataset.recordId = r[0];
         checkBox.classList.add("cb");
-        checkBox.checked = r[6] == "TRUE" ? true : false;
+        //checkBox.checked = r[6] == "TRUE" ? true : false;
         col7.appendChild(checkBox);
         var col8 = document.createElement("td");
         var icon = document.createElement("i");
@@ -263,7 +250,7 @@ function deleteGuest(e){
         icon.dataset.recordId = r[0];
         icon.textContent = "delete_forever";
         col8.appendChild(icon);
-        col8.appendChild(cb1);
+        //col8.appendChild(cb1);
         
         var saveButton = document.createElement("button");
         saveButton.textContent = "Save";
@@ -488,6 +475,25 @@ function deleteGuest(e){
         return false;
       }
     }
+    
+    
+    function deleteGuest(e){
+      var confirmation = confirm("confirm delete guest");
+      if (confirmation === true){
+    
+    loadingStart();
+    google.script.run.withSuccessHandler(function(){
+    
+       e.target.closest(".classRow").remove();
+    loadingEnd();
+  }).deleteRecordById({id: e.target.dataset.recordId});
+  
+     } else {
+        return false;
+      }
+
+
+}
 
     function showAddGuest() {
       document.getElementById("add-guest-container").classList.remove("d-none");
