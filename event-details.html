@@ -36,7 +36,7 @@
     <form>
 
         <div class="row form-group">
-            <div class="col-sm-3 text-left">
+            <div class="col-sm-4 text-center">
 
                 <textarea id="multiName" name="multiName" rows="2" cols="25"
                     placeholder="Add one or multiple guests. One guest per line. No commas. No middle names."
@@ -45,7 +45,7 @@
                     Enter names
                 </div>
             </div>
-            <div class="col-sm-2 text-center">
+            <div class="col-sm-4 text-center">
                 <!--<label>Credential Type</label>-->
                 <select id="credType" class="form-control">
                    <!-- <option disabled selected>-Cred Type-</option>
@@ -57,26 +57,26 @@
                 
                 <div class="invalid-feedback">Select a Cred Type</div>
             </div>
-            <div class="col-sm-2 text-center">
+            <div class="col-sm-4 text-center">
                 <!--<label for="organization">Last Name</label>-->
                 <input id="organization" type="text" class="form-control validate" placeholder="Organization" value="">
                 <div class="invalid-feedback">Select event</div>
             </div>
 
-            <div class="col-sm-2 text-center">
-                <!-- width: 75px; height: 60px; -->
-                <button id="btnAddMulti" type="button" class="btn btn-success align-bottom" style="background-color: olive;">Add Guests</button>
-            </div>
-            <div class="col-sm-1 text-center">
-                <button id="btnCancelAddGuest" type="button" class="btn btn-warning align-bottom" style="color: white; background-color: darkgoldenrod;">cancel</button>
-            </div>
-            <div class="col-sm-2 text-center">
-                <button id="btnDeleteEvent" type="button" class="btn btn-danger align-bottom classDeleteList" style="background-color: darkred;">Delete
-                    Event</button>
-            </div>
-
         </div>
         <!-- END ROW -->
+        <div class="row">
+         <div class="col-sm-4 text-center">
+          <!-- width: 75px; height: 60px; -->
+          <button id="btnAddMulti" type="button" class="btn btn-success align-bottom" style="background-color: olive;">Add Guests</button>
+         </div>
+         <div class="col-sm-4 text-center">
+         <button id="btnCancelAddGuest" type="button" class="btn btn-warning align-bottom" style="color: white; background-color: darkgoldenrod;">cancel</button>  
+         </div>  
+         <div class="col-sm-4 text-center">
+          <button id="btnDeleteEvent" type="button" class="btn btn-danger align-bottom classDeleteList" style="background-color: darkred;">Delete Event</button>
+         </div>  
+        </div>
     </form>
 </div>
 <!-- CLOSE CONTAINER -->

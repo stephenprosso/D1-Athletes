@@ -7,10 +7,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" />  
-    <link rel="stylesheet"
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.standalone.min.css"
-    integrity="sha256-jO7D3fIsAq+jB8Xt3NI5vBf3k4tvtHwzp8ISLQG4UWU=" crossorigin="anonymous" /> 
+    integrity="sha256-jO7D3fIsAq+jB8Xt3NI5vBf3k4tvtHwzp8ISLQG4UWU=" crossorigin="anonymous" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <?!= include("index-css"); ?>
@@ -48,10 +49,18 @@
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous"></script>
+ <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+    crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" 
+   integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" 
+   crossorigin="anonymous"></script>
   <script>
     var data;
     function loadView(options) {
@@ -81,14 +90,14 @@
 
     function populateEvents() {
       loadingStart();
-     // $('#startDate').datepicker('setDate', null);
+     $('#startDate').datepicker('setDate', null);
       google.script.run.withSuccessHandler(generateEventCard).getEventTableData();
     }
 
     function populateEventDetails(e) {
     loadingStart();
     console.log(e.eventID);
-      //loadingStart();
+
       var butt = document.getElementById("btnAddMulti");
         butt.dataset.recordId = e.eventID;
         var buttDelete = document.getElementById("btnDeleteEvent");
@@ -97,13 +106,9 @@
       google.script.run.withSuccessHandler(function(data){
       console.log(data);
           generateTableTitle(data.title);
-          generateTable(data.guests);
-            
+          generateTable(data.guests);         
       
       }).getTableInfo(e); 
-      
-      //google.script.run.withSuccessHandler(generateTableTitle).getTableTitle(e);
-      //google.script.run.withSuccessHandler(generateTable).getTableTitle(e);
    
    google.script.run.withSuccessHandler(function(data){
         var selectElement = document.getElementById("credType");
@@ -126,7 +131,7 @@
   
     //functions for click action events. ifthe target matches your class name run a function. if looking for an ID use # before the name
     function clickEventHandler(e) {
-        e.preventDefault();
+        //e.preventDefault();
         console.log(e);
       if (e.target.matches(".cardLinkClass")) {
         console.log("Clicked it!");
@@ -212,8 +217,6 @@
       $('#table-body').empty();
       var tbody = document.getElementById("table-body");
       
-
-      //need to add an if statement to call showAddGuest(); if not rows 
       dataArray.forEach(function (r) {
 
         var row = document.createElement("tr");
@@ -235,13 +238,12 @@
         var col7 = document.createElement("td");
         col7.classList.add("checkBoxButtons");
         var checkBox = document.createElement("input");
-        //var cb1 = document.createElement("input");
-        //cb1.type = "checkbox";
+
         checkBox.type = "checkbox";
-        //checkBox.value = r[6];
+        checkBox.value = r[6];
         checkBox.dataset.recordId = r[0];
         checkBox.classList.add("cb");
-        //checkBox.checked = r[6] == "TRUE" ? true : false;
+        checkBox.checked = r[6] == "TRUE" ? true : false;
         col7.appendChild(checkBox);
         var col8 = document.createElement("td");
         var icon = document.createElement("i");
@@ -250,7 +252,6 @@
         icon.dataset.recordId = r[0];
         icon.textContent = "delete_forever";
         col8.appendChild(icon);
-        //col8.appendChild(cb1);
         
         var saveButton = document.createElement("button");
         saveButton.textContent = "Save";
