@@ -9,19 +9,6 @@ function getEventTableData() {
 }
 
 //**** EVENT DETAILS JS FUNCTION ****//
-function getTableData(e) {
-  var ss = SpreadsheetApp.openByUrl(url);
-  var ws = ss.getSheetByName("Data");
-  var data = ws.getRange(2, 1, ws.getLastRow() - 1, 8).getDisplayValues();
-  //Logger.log(data);
-  data = data.filter(function (r) {
-    return r[7] == e.eventID;
-  });
-  Logger.log("data : " + data);
-  return data;
-
-}
-
 function getTableInfo(e){
   
   var ss = SpreadsheetApp.openByUrl(url);
@@ -37,7 +24,6 @@ function getTableInfo(e){
 
   });
 
-
   var wsdata = ss.getSheetByName("Data");
   var guests = wsdata.getRange(2, 1, wsdata.getLastRow() - 1, 8).getDisplayValues();
   //Logger.log(data);
@@ -51,6 +37,19 @@ function getTableInfo(e){
 }
 
 //**** EVENT DETAILS JS FUNCTION ****//
+/* function getTableData(e) {
+  var ss = SpreadsheetApp.openByUrl(url);
+  var ws = ss.getSheetByName("Data");
+  var data = ws.getRange(2, 1, ws.getLastRow() - 1, 8).getDisplayValues();
+  //Logger.log(data);
+  data = data.filter(function (r) {
+    return r[7] == e.eventID;
+  });
+  Logger.log("data : " + data);
+  return data;
+
+}
+
 function getTableTitle(e) {
   var ss = SpreadsheetApp.openByUrl(url);
   var ws = ss.getSheetByName("Events");
@@ -69,7 +68,7 @@ function getTableTitle(e) {
   Logger.log(gridTitleArray);
   return gridTitleArray;
 
-}
+} */
 
 function updateRecordById(recordInfo) {
   var spreadSheet = SpreadsheetApp.openByUrl(url);

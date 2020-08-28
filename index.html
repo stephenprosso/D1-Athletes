@@ -66,8 +66,7 @@
     function loadView(options) {
       var id = typeof options.id === "undefined" ? "app" : options.id;
       var cb = typeof options.callback === "undefined" ? function () { } : options.callback;
-      //var param = typeof options.param ==="undefined" ? function () { } : options.param;
-
+      
       google.script.run.withSuccessHandler(function (html) {
         document.getElementById(id).innerHTML = html;
         typeof options.params === "undefined" ? cb() : cb(options.params);
@@ -282,14 +281,14 @@
         row.appendChild(col7);
         row.appendChild(col8);
         tbody.appendChild(row);
-        loadingEnd();
+        //loadingEnd();
       });
     }
 
     function generateTableTitle(title) {
       //console.log(title);
       document.getElementById("title").innerHTML = title;
-
+        loadingEnd();
     }
 
     function generateEventCard(dataArray) {
